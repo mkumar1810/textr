@@ -78,11 +78,11 @@
                   [self.loginView showAlertMessage:[l_recdinfo valueForKey:@"error"]];
                   return ;
               }
-              NSLog(@"the successful login info is %@", l_recdinfo);
-              [self.navigationController popViewControllerAnimated:YES];
+              [[NSUserDefaults standardUserDefaults] setValue:[l_recdinfo valueForKey:@"sessionToken"] forKey:@"sessionToken"];
+              [[NSUserDefaults standardUserDefaults] setValue:[l_recdinfo valueForKey:@"objectId"] forKey:@"userId"];
+              [self performSegueWithIdentifier:@"landingpage" sender:self];
           }];
     }
-    
 }
 
 @end

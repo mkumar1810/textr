@@ -106,7 +106,7 @@
         l_completionCB();
         return;
     }
-    if (l_currTransitionType==horizontalWithoutBounce)
+    else if (l_currTransitionType==horizontalWithoutBounce)
     {
         if (_navOperation==UINavigationControllerOperationPush)
             [self
@@ -127,7 +127,7 @@
              withCompletionCB:l_completionCB
              andPopCB:l_popCB];
     }
-    if (l_currTransitionType==popOutVerticalOpen)
+    else if (l_currTransitionType==popOutVerticalOpen)
     {
         if (_navOperation==UINavigationControllerOperationPush)
             [self
@@ -152,7 +152,7 @@
              withCompletionCB:l_completionCB
              andPopCB:l_popCB];
     }
-    if (l_currTransitionType==horizontalWithBounce)
+    else if (l_currTransitionType==horizontalWithBounce)
     {
         if (_navOperation==UINavigationControllerOperationPush)
             [self
@@ -171,6 +171,26 @@
              duration:0.7
              finalFrame:l_finalFrame
              withCompletionCB:l_completionCB
+             andPopCB:l_popCB];
+    }
+    else if (l_currTransitionType == vertical )
+    {
+        if ( _navOperation == UINavigationControllerOperationPush )
+            [self
+             makeVerticalPushFrom:[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view
+             to:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view
+             onContainer:[transitionContext containerView]
+             duration:[self transitionDuration:transitionContext]
+             finalFrame:l_finalFrame
+             withCB:l_completionCB
+             andPushCB:l_pushCB];
+        else
+            [self
+             makeVerticalPopFrom:[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view
+             to:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view
+             onContainer:[transitionContext containerView]
+             duration:[self transitionDuration:transitionContext]
+             finalFrame:l_finalFrame withCB:l_completionCB
              andPopCB:l_popCB];
     }
 }
@@ -321,6 +341,46 @@
                          p_popCB();
                      }
                      completion:^(BOOL p_finished){
+                         p_completionCB();
+                     }];
+}
+
+- (void) makeVerticalPushFrom:(UIView*) p_fromView to:(UIView*) p_toView onContainer:(UIView*) p_containerView duration:(NSTimeInterval) p_duration finalFrame:(CGRect) p_finalFrame withCB:(NOPARAMCALLBACK) p_completionCB andPushCB:(NOPARAMCALLBACK) p_pushCB
+{
+    CGRect finalFromFrame = CGRectOffset(p_fromView.frame, 0, -p_finalFrame.size.height);
+    p_toView.frame = CGRectOffset(p_finalFrame, 0, [[UIScreen mainScreen] bounds].size.height);
+    [p_containerView addSubview:p_toView];
+    
+    [UIView animateWithDuration:p_duration
+                          delay:0
+         usingSpringWithDamping:.75
+          initialSpringVelocity:.1
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         p_fromView.frame = finalFromFrame;
+                         p_toView.frame = p_finalFrame;
+                         p_pushCB();
+                     } completion:^(BOOL finished) {
+                         p_completionCB();
+                     }];
+}
+
+- (void) makeVerticalPopFrom:(UIView*) p_fromView to:(UIView*) p_toView onContainer:(UIView*) p_containerView duration:(NSTimeInterval) p_duration finalFrame:(CGRect) p_finalFrame withCB:(NOPARAMCALLBACK) p_completionCB andPopCB:(NOPARAMCALLBACK) p_popCB
+{
+    CGRect finalFromFrame = CGRectOffset(p_fromView.frame, 0, p_finalFrame.size.height);
+    p_toView.frame = CGRectOffset(p_finalFrame, 0, -[[UIScreen mainScreen] bounds].size.height);
+    [p_containerView addSubview:p_toView];
+    
+    [UIView animateWithDuration:p_duration
+                          delay:0
+         usingSpringWithDamping:.75
+          initialSpringVelocity:.1
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         p_fromView.frame = finalFromFrame;
+                         p_toView.frame = p_finalFrame;
+                         p_popCB();
+                     } completion:^(BOOL finished) {
                          p_completionCB();
                      }];
 }

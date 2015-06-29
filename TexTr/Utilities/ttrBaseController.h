@@ -23,14 +23,14 @@
 @property (nonatomic,strong) UIBarButtonItem * bar_logout_btn;
 @property (nonatomic,strong) UIBarButtonItem * bar_report_prev_btn;
 @property (nonatomic,strong) UIBarButtonItem * bar_printout_btn;
-@property (nonatomic,strong) UIBarButtonItem * bar_email_btn;
+@property (nonatomic,strong) UIBarButtonItem * bar_edit_btn;
 @property (nonatomic,strong) UIBarButtonItem * bar_list_btn;
 @property (nonatomic,strong) UIBarButtonItem * bar_logo_btn;
 
 - (void) initializeData;
 - (void) generateReportPreview;
 - (void) makePrintOutOfReport;
-- (void) sendShowingReportAsMail;
+- (void) editOptionPressed;
 - (void) exitReportPreview;
 - (void) performSearchOperation;
 - (void) executeListButtonClicked;

@@ -182,6 +182,9 @@
     {
         [self drawGenDataEntryCell:rect];
         _dispTxtField.placeholder = @"username";
+#ifdef DEBUG
+        _dispTxtField.text = @"mku1";
+#endif
     }
     if ([self.reuseIdentifier isEqualToString:@"empty"])
     {
@@ -192,14 +195,18 @@
         [self drawGenDataEntryCell:rect];
         _dispTxtField.placeholder = @"password";
         _dispTxtField.secureTextEntry = YES;
+#ifdef DEBUG
+        _dispTxtField.text = @"123";
+#endif
     }
     if ([self.reuseIdentifier isEqualToString:@"login"])
     {
         [self drawLoginCell:rect];
     }
-    UIView * l_vw = [UIView new];
+    /*UIView * l_vw = [UIView new];
     [l_vw setBackgroundColor:[UIColor clearColor]];
-    [self setSelectedBackgroundView:l_vw];
+    [self setSelectedBackgroundView:l_vw];*/
+    [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     [self layoutIfNeeded];
 }
 

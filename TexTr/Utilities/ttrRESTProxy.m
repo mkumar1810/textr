@@ -64,7 +64,39 @@
         l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
         l_requesttype = @"GET";
     }
-    
+    else if ([_responseType isEqualToString:@"CREATEGROUP"]==YES)
+    {
+        l_url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/classes/groups",MAIN_API_HOST_URL]];
+        l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
+        l_requesttype = @"POST";
+        l_passdata = [NSJSONSerialization dataWithJSONObject:_inputParms options:kNilOptions error:&l_error];
+        l_messagebody = [[NSString alloc] initWithData:l_passdata encoding:NSUTF8StringEncoding];
+        [l_theRequest addValue: @"application/json" forHTTPHeaderField:@"Content-Type"];
+    }
+    else if ([_responseType isEqualToString:@"GROUPIMAGE"])
+    {
+        l_url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/files/grpimage.jpg",MAIN_API_HOST_URL]];
+        l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
+        l_requesttype = @"POST";
+        l_passdata = [NSJSONSerialization dataWithJSONObject:_inputParms options:kNilOptions error:&l_error];
+        l_messagebody = [[NSString alloc] initWithData:l_passdata encoding:NSUTF8StringEncoding];
+        [l_theRequest addValue: @"plain/text" forHTTPHeaderField:@"Content-Type"];
+    }
+    else if ([_responseType isEqualToString:@"GETSTREAMS"])
+    {
+        l_url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/functions/getstreams",MAIN_API_HOST_URL]];
+        l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
+        l_requesttype = @"POST";
+        l_passdata = [NSJSONSerialization dataWithJSONObject:_inputParms options:kNilOptions error:&l_error];
+        l_messagebody = [[NSString alloc] initWithData:l_passdata encoding:NSUTF8StringEncoding];
+        [l_theRequest addValue: @"application/json" forHTTPHeaderField:@"Content-Type"];
+    }
+    else if ([_responseType isEqualToString:@"GETFILE"])
+    {
+        l_url = [NSURL URLWithString:[_inputParms valueForKey:@"filename"]];
+        l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
+        l_requesttype = @"GET";
+    }
     [l_theRequest setHTTPMethod:l_requesttype];
     [l_theRequest addValue:PARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
     [l_theRequest addValue:PARSE_REST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];

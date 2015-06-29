@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0104F04A1B3C0C11009A079E /* ttrHomeCtrlr.m in Sources */ = {isa = PBXBuildFile; fileRef = 0104F0491B3C0C11009A079E /* ttrHomeCtrlr.m */; };
+		0104F04E1B3C424A009A079E /* ttrGroupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0104F04D1B3C424A009A079E /* ttrGroupController.m */; };
+		0104F0511B3C5389009A079E /* ttrGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0104F0501B3C5389009A079E /* ttrGroupView.m */; };
 		011B75A11B3B85BE001D2119 /* ttrLoginCtrlr.m in Sources */ = {isa = PBXBuildFile; fileRef = 011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */; };
 		011B75A41B3B86D5001D2119 /* ttrLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011B75A31B3B86D5001D2119 /* ttrLoginView.m */; };
 		017B58B71B381051002A0ED6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B58B61B381051002A0ED6 /* main.m */; };
@@ -25,7 +28,8 @@
 		01E57BF01B3AC182006C4047 /* ttrCaptureDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E57BEF1B3AC182006C4047 /* ttrCaptureDate.m */; };
 		01E57BF31B3AD2DE006C4047 /* ttrRESTProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E57BF21B3AD2DE006C4047 /* ttrRESTProxy.m */; };
 		01E57BF61B3AFC8B006C4047 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E57BF51B3AFC8B006C4047 /* Base64.m */; };
-		01EB8D501B39A27000CFF090 /* ttrProfilePictureCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EB8D4F1B39A27000CFF090 /* ttrProfilePictureCapture.m */; };
+		01E8DF971B3D159800381D44 /* ttrProfilePictureCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8DF961B3D159800381D44 /* ttrProfilePictureCapture.m */; };
+		01E8DF9A1B3D602600381D44 /* ttrHomeStreamsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E8DF991B3D602600381D44 /* ttrHomeStreamsView.m */; };
 		01F159D51B3999DD00FDF78B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01F159D41B3999DD00FDF78B /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +44,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0104F0481B3C0C11009A079E /* ttrHomeCtrlr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrHomeCtrlr.h; sourceTree = "<group>"; };
+		0104F0491B3C0C11009A079E /* ttrHomeCtrlr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrHomeCtrlr.m; sourceTree = "<group>"; };
+		0104F04C1B3C424A009A079E /* ttrGroupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrGroupController.h; sourceTree = "<group>"; };
+		0104F04D1B3C424A009A079E /* ttrGroupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrGroupController.m; sourceTree = "<group>"; };
+		0104F04F1B3C5389009A079E /* ttrGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrGroupView.h; sourceTree = "<group>"; };
+		0104F0501B3C5389009A079E /* ttrGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrGroupView.m; sourceTree = "<group>"; };
 		011B759F1B3B85BE001D2119 /* ttrLoginCtrlr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrLoginCtrlr.h; sourceTree = "<group>"; };
 		011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrLoginCtrlr.m; sourceTree = "<group>"; };
 		011B75A21B3B86D5001D2119 /* ttrLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrLoginView.h; sourceTree = "<group>"; };
@@ -76,8 +86,10 @@
 		01E57BF21B3AD2DE006C4047 /* ttrRESTProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrRESTProxy.m; sourceTree = "<group>"; };
 		01E57BF41B3AFC8B006C4047 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		01E57BF51B3AFC8B006C4047 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
-		01EB8D4E1B39A27000CFF090 /* ttrProfilePictureCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrProfilePictureCapture.h; sourceTree = "<group>"; };
-		01EB8D4F1B39A27000CFF090 /* ttrProfilePictureCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrProfilePictureCapture.m; sourceTree = "<group>"; };
+		01E8DF951B3D159800381D44 /* ttrProfilePictureCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrProfilePictureCapture.h; sourceTree = "<group>"; };
+		01E8DF961B3D159800381D44 /* ttrProfilePictureCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrProfilePictureCapture.m; sourceTree = "<group>"; };
+		01E8DF981B3D602600381D44 /* ttrHomeStreamsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrHomeStreamsView.h; sourceTree = "<group>"; };
+		01E8DF991B3D602600381D44 /* ttrHomeStreamsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrHomeStreamsView.m; sourceTree = "<group>"; };
 		01F159D41B3999DD00FDF78B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -100,6 +112,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0104F04B1B3C4237009A079E /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				0104F04C1B3C424A009A079E /* ttrGroupController.h */,
+				0104F04D1B3C424A009A079E /* ttrGroupController.m */,
+				0104F04F1B3C5389009A079E /* ttrGroupView.h */,
+				0104F0501B3C5389009A079E /* ttrGroupView.m */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
 		017B58A81B381051002A0ED6 = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +145,7 @@
 		017B58B31B381051002A0ED6 /* TexTr */ = {
 			isa = PBXGroup;
 			children = (
+				0104F04B1B3C4237009A079E /* Group */,
 				01D728551B3829CC004C3F52 /* Authorization */,
 				01D728431B3824A6004C3F52 /* Home */,
 				01D728451B3824A6004C3F52 /* Utilities */,
@@ -163,6 +187,10 @@
 		01D728431B3824A6004C3F52 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				0104F0481B3C0C11009A079E /* ttrHomeCtrlr.h */,
+				0104F0491B3C0C11009A079E /* ttrHomeCtrlr.m */,
+				01E8DF981B3D602600381D44 /* ttrHomeStreamsView.h */,
+				01E8DF991B3D602600381D44 /* ttrHomeStreamsView.m */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -170,6 +198,8 @@
 		01D728451B3824A6004C3F52 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				01E8DF951B3D159800381D44 /* ttrProfilePictureCapture.h */,
+				01E8DF961B3D159800381D44 /* ttrProfilePictureCapture.m */,
 				01E57BF41B3AFC8B006C4047 /* Base64.h */,
 				01E57BF51B3AFC8B006C4047 /* Base64.m */,
 				01D728461B38262A004C3F52 /* ttrBaseNavController.h */,
@@ -199,8 +229,6 @@
 				01D7285A1B384AFC004C3F52 /* ttrSignUpCtrlr.m */,
 				01D7285C1B385630004C3F52 /* ttrSignUpView.h */,
 				01D7285D1B385630004C3F52 /* ttrSignUpView.m */,
-				01EB8D4E1B39A27000CFF090 /* ttrProfilePictureCapture.h */,
-				01EB8D4F1B39A27000CFF090 /* ttrProfilePictureCapture.m */,
 				011B759F1B3B85BE001D2119 /* ttrLoginCtrlr.h */,
 				011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */,
 				011B75A21B3B86D5001D2119 /* ttrLoginView.h */,
@@ -258,6 +286,7 @@
 				TargetAttributes = {
 					017B58B01B381051002A0ED6 = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = XRFSBJJGBT;
 					};
 					017B58C91B381051002A0ED6 = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -312,18 +341,22 @@
 				01E57BF31B3AD2DE006C4047 /* ttrRESTProxy.m in Sources */,
 				01D7284E1B382662004C3F52 /* ttrBaseController.m in Sources */,
 				01D7285E1B385630004C3F52 /* ttrSignUpView.m in Sources */,
-				01EB8D501B39A27000CFF090 /* ttrProfilePictureCapture.m in Sources */,
 				01D728581B3829EE004C3F52 /* ttrSgnLgnOptionScreen.m in Sources */,
 				01D728511B382846004C3F52 /* ttrCommonUtilities.m in Sources */,
 				011B75A41B3B86D5001D2119 /* ttrLoginView.m in Sources */,
+				0104F04E1B3C424A009A079E /* ttrGroupController.m in Sources */,
+				01E8DF9A1B3D602600381D44 /* ttrHomeStreamsView.m in Sources */,
+				0104F0511B3C5389009A079E /* ttrGroupView.m in Sources */,
 				01D728541B38291E004C3F52 /* ttrBaseNavigatorSegue.m in Sources */,
 				017B58BA1B381051002A0ED6 /* AppDelegate.m in Sources */,
 				01E57BF01B3AC182006C4047 /* ttrCaptureDate.m in Sources */,
 				01D7284B1B38264C004C3F52 /* ttrDefaults.m in Sources */,
 				017B58B71B381051002A0ED6 /* main.m in Sources */,
+				0104F04A1B3C0C11009A079E /* ttrHomeCtrlr.m in Sources */,
 				011B75A11B3B85BE001D2119 /* ttrLoginCtrlr.m in Sources */,
 				01D728481B38262A004C3F52 /* ttrBaseNavController.m in Sources */,
 				01D7285B1B384AFC004C3F52 /* ttrSignUpCtrlr.m in Sources */,
+				01E8DF971B3D159800381D44 /* ttrProfilePictureCapture.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +390,72 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		011F41A71B4161F500145074 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Distribution;
+		};
+		011F41A81B4161F500145074 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Chowdary Adusumilli (XRFSBJJGBT)";
+				INFOPLIST_FILE = TexTr/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e6541685-80d6-4e8d-8b7d-b43763cf7b3f";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Distribution;
+		};
+		011F41A91B4161F500145074 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TexTrTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TexTr.app/TexTr";
+			};
+			name = Distribution;
+		};
 		017B58D21B381051002A0ED6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -442,9 +541,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TexTr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e6541685-80d6-4e8d-8b7d-b43763cf7b3f";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -454,9 +555,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TexTr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e6541685-80d6-4e8d-8b7d-b43763cf7b3f";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
@@ -503,6 +606,7 @@
 			buildConfigurations = (
 				017B58D21B381051002A0ED6 /* Debug */,
 				017B58D31B381051002A0ED6 /* Release */,
+				011F41A71B4161F500145074 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -512,6 +616,7 @@
 			buildConfigurations = (
 				017B58D51B381051002A0ED6 /* Debug */,
 				017B58D61B381051002A0ED6 /* Release */,
+				011F41A81B4161F500145074 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -521,6 +626,7 @@
 			buildConfigurations = (
 				017B58D81B381051002A0ED6 /* Debug */,
 				017B58D91B381051002A0ED6 /* Release */,
+				011F41A91B4161F500145074 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

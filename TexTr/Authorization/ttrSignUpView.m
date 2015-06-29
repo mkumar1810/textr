@@ -355,9 +355,10 @@
     {
         [self drawTermsCell:rect];
     }
-    UIView * l_vw = [UIView new];
-    [l_vw setBackgroundColor:[UIColor clearColor]];
-    [self setSelectedBackgroundView:l_vw];
+    /*UIView * l_vw = [UIView new];
+     [l_vw setBackgroundColor:[UIColor clearColor]];
+     [self setSelectedBackgroundView:l_vw];*/
+    [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     [self layoutIfNeeded];
     _dispTxtField.tag = _posnNo;
     _dispTxtField.delegate = _txtDelegate;

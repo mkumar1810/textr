@@ -17,10 +17,10 @@ typedef enum {
     noanimation,
     //horizontal,
     horizontalWithoutBounce,
-    //vertical,
+    vertical,
     popOutVerticalOpen,
     horizontalWithBounce,
-    //pageCurlFromright
+    pageCurlFromright
 } TransitionType;
 
 typedef void (^NOPARAMCALLBACK) ();

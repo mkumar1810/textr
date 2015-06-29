@@ -91,11 +91,10 @@
     [l_printbtn addTarget:self action:@selector(makePrintOutOfReport) forControlEvents:UIControlEventTouchUpInside];
     self.bar_printout_btn = [[UIBarButtonItem alloc] initWithCustomView:l_printbtn];
     
-    UIButton * l_emailbtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
-    [l_emailbtn setImage:[UIImage imageNamed:@"email_nb"] forState:UIControlStateNormal];
-    [l_emailbtn addTarget:self action:@selector(sendShowingReportAsMail) forControlEvents:UIControlEventTouchUpInside];
-    self.bar_email_btn = [[UIBarButtonItem alloc] initWithCustomView:l_emailbtn];
-    
+    UIButton * l_editbtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [l_editbtn setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
+    [l_editbtn addTarget:self action:@selector(editOptionPressed) forControlEvents:UIControlEventTouchUpInside];
+    self.bar_edit_btn = [[UIBarButtonItem alloc] initWithCustomView:l_editbtn];
     
     UIButton * l_logoiconbtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,20.0, 20.0)];
     [l_logoiconbtn setImage:[UIImage imageNamed:@"logoicon"] forState:UIControlStateNormal];
@@ -170,7 +169,7 @@
     
 }
 
-- (void) sendShowingReportAsMail
+- (void) editOptionPressed
 {
     
 }

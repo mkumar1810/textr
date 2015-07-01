@@ -108,7 +108,7 @@
     self.bar_refresh_btn = [[UIBarButtonItem alloc] initWithCustomView:l_refreshbtn];
     
     UIButton * l_navlistbtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20.0, 20.0)];
-    [l_navlistbtn setImage:[UIImage imageNamed:@"list"] forState:UIControlStateNormal];
+    [l_navlistbtn setImage:[UIImage imageNamed:@"menu"] forState:UIControlStateNormal];
     [l_navlistbtn addTarget:self action:@selector(executeListButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [l_navlistbtn setBackgroundColor:[UIColor clearColor]];
     self.bar_list_btn = [[UIBarButtonItem alloc] initWithCustomView:l_navlistbtn];

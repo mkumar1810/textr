@@ -67,20 +67,26 @@
         [self.actView startAnimating];
          [[ttrRESTProxy alloc] initDatawithAPIType:@"UESRLOGIN" andInputParams:l_saveinfo andReturnMethod:^(NSDictionary * p_aftersignupinfo)
           {
-              NSDictionary * l_recdinfo = (NSDictionary*) [NSJSONSerialization
-                                                           JSONObjectWithData:[p_aftersignupinfo valueForKey:@"resultdata"]
-                                                           options:NSJSONReadingMutableLeaves
-                                                           error:NULL];
-              NSInteger l_errorcode = [[l_recdinfo valueForKey:@"code"] integerValue];
-              [self.actView stopAnimating];
-              if (l_errorcode!=0)
+              NSInteger l_errno = [[p_aftersignupinfo valueForKey:@"error"] integerValue];
+              if (l_errno==0)
               {
-                  [self.loginView showAlertMessage:[l_recdinfo valueForKey:@"error"]];
-                  return ;
+                  NSDictionary * l_recdinfo = (NSDictionary*) [NSJSONSerialization
+                                                               JSONObjectWithData:[p_aftersignupinfo valueForKey:@"resultdata"]
+                                                               options:NSJSONReadingMutableLeaves
+                                                               error:NULL];
+                  NSInteger l_errorcode = [[l_recdinfo valueForKey:@"code"] integerValue];
+                  if (l_errorcode!=0)
+                  {
+                      [self.loginView showAlertMessage:[l_recdinfo valueForKey:@"error"]];
+                      return ;
+                  }
+                  [[NSUserDefaults standardUserDefaults] setValue:[l_recdinfo valueForKey:@"sessionToken"] forKey:@"sessionToken"];
+                  [[NSUserDefaults standardUserDefaults] setValue:[l_recdinfo valueForKey:@"objectId"] forKey:@"userId"];
+                  [self performSegueWithIdentifier:@"landingpage" sender:self];
               }
-              [[NSUserDefaults standardUserDefaults] setValue:[l_recdinfo valueForKey:@"sessionToken"] forKey:@"sessionToken"];
-              [[NSUserDefaults standardUserDefaults] setValue:[l_recdinfo valueForKey:@"objectId"] forKey:@"userId"];
-              [self performSegueWithIdentifier:@"landingpage" sender:self];
+              else
+                  [self.loginView showAlertMessage:@"Error during Logging"];
+              [self.actView stopAnimating];
           }];
     }
 }

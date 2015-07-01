@@ -12,6 +12,8 @@
 		0104F0511B3C5389009A079E /* ttrGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0104F0501B3C5389009A079E /* ttrGroupView.m */; };
 		011B75A11B3B85BE001D2119 /* ttrLoginCtrlr.m in Sources */ = {isa = PBXBuildFile; fileRef = 011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */; };
 		011B75A41B3B86D5001D2119 /* ttrLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011B75A31B3B86D5001D2119 /* ttrLoginView.m */; };
+		011F41AC1B417ACC00145074 /* ttrHomePullOverBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 011F41AB1B417ACC00145074 /* ttrHomePullOverBtn.m */; };
+		0135D67A1B42C2BD000BD9A2 /* ttrHomeMyStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0135D6791B42C2BD000BD9A2 /* ttrHomeMyStatusView.m */; };
 		017B58B71B381051002A0ED6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B58B61B381051002A0ED6 /* main.m */; };
 		017B58BA1B381051002A0ED6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B58B91B381051002A0ED6 /* AppDelegate.m */; };
 		017B58C01B381051002A0ED6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 017B58BE1B381051002A0ED6 /* Main.storyboard */; };
@@ -54,6 +56,10 @@
 		011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrLoginCtrlr.m; sourceTree = "<group>"; };
 		011B75A21B3B86D5001D2119 /* ttrLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrLoginView.h; sourceTree = "<group>"; };
 		011B75A31B3B86D5001D2119 /* ttrLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrLoginView.m; sourceTree = "<group>"; };
+		011F41AA1B417ACC00145074 /* ttrHomePullOverBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrHomePullOverBtn.h; sourceTree = "<group>"; };
+		011F41AB1B417ACC00145074 /* ttrHomePullOverBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrHomePullOverBtn.m; sourceTree = "<group>"; };
+		0135D6781B42C2BD000BD9A2 /* ttrHomeMyStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrHomeMyStatusView.h; sourceTree = "<group>"; };
+		0135D6791B42C2BD000BD9A2 /* ttrHomeMyStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrHomeMyStatusView.m; sourceTree = "<group>"; };
 		017B58B11B381051002A0ED6 /* TexTr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TexTr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		017B58B51B381051002A0ED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		017B58B61B381051002A0ED6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -191,6 +197,10 @@
 				0104F0491B3C0C11009A079E /* ttrHomeCtrlr.m */,
 				01E8DF981B3D602600381D44 /* ttrHomeStreamsView.h */,
 				01E8DF991B3D602600381D44 /* ttrHomeStreamsView.m */,
+				011F41AA1B417ACC00145074 /* ttrHomePullOverBtn.h */,
+				011F41AB1B417ACC00145074 /* ttrHomePullOverBtn.m */,
+				0135D6781B42C2BD000BD9A2 /* ttrHomeMyStatusView.h */,
+				0135D6791B42C2BD000BD9A2 /* ttrHomeMyStatusView.m */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -339,12 +349,14 @@
 			files = (
 				01E57BF61B3AFC8B006C4047 /* Base64.m in Sources */,
 				01E57BF31B3AD2DE006C4047 /* ttrRESTProxy.m in Sources */,
+				0135D67A1B42C2BD000BD9A2 /* ttrHomeMyStatusView.m in Sources */,
 				01D7284E1B382662004C3F52 /* ttrBaseController.m in Sources */,
 				01D7285E1B385630004C3F52 /* ttrSignUpView.m in Sources */,
 				01D728581B3829EE004C3F52 /* ttrSgnLgnOptionScreen.m in Sources */,
 				01D728511B382846004C3F52 /* ttrCommonUtilities.m in Sources */,
 				011B75A41B3B86D5001D2119 /* ttrLoginView.m in Sources */,
 				0104F04E1B3C424A009A079E /* ttrGroupController.m in Sources */,
+				011F41AC1B417ACC00145074 /* ttrHomePullOverBtn.m in Sources */,
 				01E8DF9A1B3D602600381D44 /* ttrHomeStreamsView.m in Sources */,
 				0104F0511B3C5389009A079E /* ttrGroupView.m in Sources */,
 				01D728541B38291E004C3F52 /* ttrBaseNavigatorSegue.m in Sources */,
@@ -545,7 +557,7 @@
 				INFOPLIST_FILE = TexTr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e6541685-80d6-4e8d-8b7d-b43763cf7b3f";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -559,7 +571,7 @@
 				INFOPLIST_FILE = TexTr/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e6541685-80d6-4e8d-8b7d-b43763cf7b3f";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

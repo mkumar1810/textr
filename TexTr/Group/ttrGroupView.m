@@ -494,7 +494,8 @@
 
 - (BOOL)becomeFirstResponder
 {
-    if (_dispTxtField) {
+    if (_dispTxtField)
+    {
         [_dispTxtField becomeFirstResponder];
     }
     return YES;

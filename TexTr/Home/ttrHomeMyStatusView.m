@@ -1,26 +1,25 @@
 //
-//  ttrHomeStreamsView.m
+//  ttrHomeMyStatusView.m
 //  TexTr
 //
-//  Created by Mohan Kumar on 26/06/15.
+//  Created by Mohan Kumar on 30/06/15.
 //  Copyright (c) 2015 Enter key solutions. All rights reserved.
 //
 
-#import "ttrHomeStreamsView.h"
+#import "ttrHomeMyStatusView.h"
 #import "ttrDefaults.h"
 #import "ttrRESTProxy.h"
 
-@interface ttrHomeStreamsView()<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
+@interface ttrHomeMyStatusView()<UITableViewDataSource, UITableViewDelegate>
 {
     CGFloat _rowHeight;
 }
 
-@property (nonatomic,strong) UITableView * streamViewTV;
-
+@property (nonatomic,strong) UITableView * myStatusViewTV;
 
 @end
 
-@implementation ttrHomeStreamsView
+@implementation ttrHomeMyStatusView
 
 - (instancetype)init
 {
@@ -38,18 +37,18 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    if (self.streamViewTV)
+    if (self.myStatusViewTV)
         return;
-    self.streamViewTV = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    self.streamViewTV.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:self.streamViewTV];
-    self.streamViewTV.dataSource = self;
-    self.streamViewTV.delegate = self;
-    [self.streamViewTV setSeparatorColor:[UIColor clearColor]];
-    [self.streamViewTV setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
-    [self.streamViewTV setBackgroundColor:[UIColor clearColor]];
-    self.streamViewTV.contentInset = UIEdgeInsetsZero;
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:1.0],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]]];
+    self.myStatusViewTV = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    self.myStatusViewTV.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.myStatusViewTV];
+    self.myStatusViewTV.dataSource = self;
+    self.myStatusViewTV.delegate = self;
+    [self.myStatusViewTV setSeparatorColor:[UIColor clearColor]];
+    [self.myStatusViewTV setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    [self.myStatusViewTV setBackgroundColor:[UIColor clearColor]];
+    self.myStatusViewTV.contentInset = UIEdgeInsetsZero;
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:self.myStatusViewTV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:1.0],[NSLayoutConstraint constraintWithItem:self.myStatusViewTV attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.myStatusViewTV attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.myStatusViewTV attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]]];
     [self layoutIfNeeded];
 }
 
@@ -59,9 +58,9 @@
     [l_alert show];
 }
 
-- (void) reloadAllTheStreams
+- (void) reloadAllMyStatusStreams
 {
-    [self.streamViewTV reloadData];
+    [self.myStatusViewTV reloadData];
 }
 
 #pragma tableview delegates
@@ -78,7 +77,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0; //.1 * _rowHeight;
+    if (section==0)
+        return 0; //.1 * _rowHeight;
+    else
+        return 40.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -88,13 +90,6 @@
     return l_hdrvw;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView * l_ftrvw = [UIView new];
-    [l_ftrvw setBackgroundColor:[UIColor clearColor]];
-    return l_ftrvw;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -102,61 +97,51 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.handlerDelegate checkIfGroupImageAvailable:indexPath.row])
-        return _rowHeight*2.0;
-    else
-        return _rowHeight;
+    return _rowHeight;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.handlerDelegate getNumberOfStreams];
+    return [self.handlerDelegate getNumberOfMyStatusStream];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * l_plainstreamcell = @"grp_plain_cell";
-    static NSString * l_imgstreamcell = @"grp_image_cell";
-    NSString * l_reqdcellid = l_plainstreamcell;
-    NSDictionary * l_streamdict = [self.handlerDelegate getStreamDataAtPosn:indexPath.row];
-    if ([l_streamdict valueForKey:@"groupimg"])
-        l_reqdcellid = l_imgstreamcell;
-    
-    ttrHomeStreamsViewCustomCell * l_newcell = [tableView dequeueReusableCellWithIdentifier:l_reqdcellid];
+    static NSString * l_followcellid = @"follow_cell";
+    NSDictionary * l_mystatfeeddict = [self.handlerDelegate getMyStatusStreamDataAtPosn:indexPath.row];
+    ttrHomeStatFeedViewCustomCell * l_newcell = [tableView dequeueReusableCellWithIdentifier:l_followcellid];
     if (!l_newcell)
-        l_newcell = [[ttrHomeStreamsViewCustomCell alloc]
+        l_newcell = [[ttrHomeStatFeedViewCustomCell alloc]
                      initWithStyle:UITableViewCellStyleSubtitle
-                     reuseIdentifier:l_reqdcellid
-                     onPosn:indexPath.row
-                     andDataDelegate:self.handlerDelegate];
-    [l_newcell setDisplayValuesAtPosn:indexPath.row andStreamDict:l_streamdict];
+                     reuseIdentifier:l_followcellid
+                     onPosn:indexPath.row];
+    [l_newcell setDisplayValuesAtPosn:indexPath.row andMyStatusDict:l_mystatfeeddict];
     return l_newcell;
 }
 
 @end
 
-@interface ttrHomeStreamsViewCustomCell()
+
+@interface ttrHomeStatFeedViewCustomCell()
 {
-    UIImageView * _profileView, * _grpImgView;
+    UIImageView * _profileView;
     UILabel * _lblusername, * _lblgrptitle, * _lbldescription;
     NSInteger _posnNo;
     UIButton * _btncomments, * _btnpin, * _btnshare;
     UILabel * _lblcomments, * _lblpin, * lblshare, * _lbltimediff;
-    id<ttrHomeStreamsViewDelegate> _dataDelegate;
-    NSDictionary * _streamDict;
+    NSDictionary * _statfeedDict;
 }
 
 @end
 
-@implementation ttrHomeStreamsViewCustomCell
+@implementation ttrHomeStatFeedViewCustomCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier onPosn:(NSInteger) p_posnNo andDataDelegate:(id<ttrHomeStreamsViewDelegate>) p_dataDelegate
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier onPosn:(NSInteger) p_posnNo
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self)
     {
         _posnNo = p_posnNo;
-        _dataDelegate = p_dataDelegate;
         [self setBackgroundColor:[UIColor colorWithRed:0.94 green:0.97 blue:1.0 alpha:1.0]];
     }
     return self;
@@ -164,31 +149,10 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    if ([self.reuseIdentifier rangeOfString:@"plain"].location!=NSNotFound)  // plain cell
-    {
-        [self drawPlainCell:rect];
-    }
-    else if ([self.reuseIdentifier rangeOfString:@"image"].location!=NSNotFound) // image cell
-    {
-        [self drawPlainCell:rect];
-        [self drawGroupImage:rect];
-    }
+    [self drawPlainCell:rect];
     [self setSelectionStyle:UITableViewCellSelectionStyleNone];
     [self layoutIfNeeded];
     [self displayValues];
-}
-
-- (void) drawGroupImage:(CGRect) p_rect
-{
-    _grpImgView = [UIImageView new];
-    _grpImgView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_grpImgView setBackgroundColor:[UIColor colorWithWhite:0.97 alpha:0.97]];
-    [self addSubview:_grpImgView];
-    
-    CGFloat l_descimgheight = p_rect.size.height / 2;
-    
-    [_grpImgView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[gi(gi_h)]" options:0 metrics:@{@"gi_h":@(l_descimgheight)} views:@{@"gi":_grpImgView}]];
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-10.0)],[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:(5.0)],[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:2.0 constant:(-l_descimgheight/2-20.0)]]];
 }
 
 - (void) drawPlainCell:(CGRect) p_rect
@@ -242,7 +206,7 @@
         CGContextSetFillColorWithColor(l_ctx, [UIColor lightGrayColor].CGColor);
         CGContextFillPath(l_ctx);
         CGPathRelease(l_pinpathRef);
-
+        
         CGContextSetLineWidth(l_ctx, 1.0);
         CGContextMoveToPoint(l_ctx, p_rect.size.width/2.0 - 9.5, p_rect.size.height-12.5);
         CGContextAddLineToPoint(l_ctx, p_rect.size.width/2.0 - 9.5, p_rect.size.height-5.0);
@@ -276,7 +240,7 @@
     [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblusername attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-90.0)]]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[pv]-10-[name]" options:0 metrics:nil views:@{@"name":_lblusername,@"pv":_profileView}]];
     [_lblusername sizeToFit];
-
+    
     _lblgrptitle = [ttrDefaults getStandardLabelWithText:@"group title"];
     [self addSubview:_lblgrptitle];
     _lblgrptitle.font = [UIFont boldSystemFontOfSize:12.0f];
@@ -285,7 +249,7 @@
     _lblgrptitle.textColor = [UIColor blackColor];
     [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-100.0)],[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
     [_lblgrptitle sizeToFit];
-
+    
     _lbldescription = [ttrDefaults getStandardLabelWithText:@"description"];
     [self addSubview:_lbldescription];
     _lbldescription.font = [UIFont systemFontOfSize:10.0f];
@@ -321,7 +285,7 @@
     [_btnpin addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bp(10)]" options:0 metrics:nil views:@{@"bp":_btnpin}]];
     [_btnpin addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[bp(20)]" options:0 metrics:nil views:@{@"bp":_btnpin}]];
     [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_btnpin attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:3.5],[NSLayoutConstraint constraintWithItem:_btnpin attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:2.0 constant:(-10.0)]]];
-
+    
     _btnshare = [ttrDefaults getStandardButton];
     [_btnshare setBackgroundColor:[UIColor clearColor]];
     _btnshare.translatesAutoresizingMaskIntoConstraints = NO;
@@ -334,14 +298,14 @@
     [_btnshare addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bs(10)]" options:0 metrics:nil views:@{@"bs":_btnshare}]];
     [_btnshare addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[bs(35)]" options:0 metrics:nil views:@{@"bs":_btnshare}]];
     [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_btnshare attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:2.0 constant:(-30.0)],[NSLayoutConstraint constraintWithItem:_btnshare attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:2.0 constant:(-10.0)]]];
-
+    
     l_drawLines();
 }
 
-- (void) setDisplayValuesAtPosn:(NSInteger) p_posnNo andStreamDict:(NSDictionary*) p_streamDict
+- (void) setDisplayValuesAtPosn:(NSInteger) p_posnNo andMyStatusDict:(NSDictionary*) p_myStatusDict
 {
     _posnNo = p_posnNo;
-    _streamDict = p_streamDict;
+    _statfeedDict = p_myStatusDict;
     if (_profileView) {
         [self displayValues];
     }
@@ -349,29 +313,18 @@
 
 - (void) displayValues
 {
-    _lblusername.text = [_streamDict valueForKey:@"username"];
-    _lblgrptitle.text = [_streamDict valueForKey:@"title"];
-    _lbldescription.text = [_streamDict valueForKey:@"description"];
+    _lblusername.text = [_statfeedDict valueForKey:@"username"];
+    _lblgrptitle.text = [_statfeedDict valueForKey:@"title"];
+    _lbldescription.text = [_statfeedDict valueForKey:@"description"];
     _profileView.image = [UIImage imageNamed:@"nophoto"];
-    _grpImgView.image = nil;
-    if ([_streamDict valueForKey:@"userprofile"])
+    if ([_statfeedDict valueForKey:@"userprofile"])
     {
         [[ttrRESTProxy alloc]
          initDatawithAPIType:@"GETFILE"
-         andInputParams:@{@"filename":[_streamDict valueForKey:@"userprofile"]}
+         andInputParams:@{@"filename":[_statfeedDict valueForKey:@"userprofile"]}
          andReturnMethod:^(NSDictionary * p_imgfileinfo)
          {
              _profileView.image = [UIImage imageWithData:[p_imgfileinfo valueForKey:@"resultdata"]];
-         }];
-    }
-    if ([_streamDict valueForKey:@"groupimg"])
-    {
-        [[ttrRESTProxy alloc]
-         initDatawithAPIType:@"GETFILE"
-         andInputParams:@{@"filename":[_streamDict valueForKey:@"groupimg"]}
-         andReturnMethod:^(NSDictionary * p_imgfileinfo)
-         {
-             _grpImgView.image = [UIImage imageWithData:[p_imgfileinfo valueForKey:@"resultdata"]];
          }];
     }
 }

@@ -183,7 +183,7 @@
         [self drawGenDataEntryCell:rect];
         _dispTxtField.placeholder = @"username";
 #ifdef DEBUG
-        _dispTxtField.text = @"mku1";
+        _dispTxtField.text = @"newmo1";
 #endif
     }
     if ([self.reuseIdentifier isEqualToString:@"empty"])

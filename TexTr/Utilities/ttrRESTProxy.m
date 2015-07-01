@@ -91,6 +91,15 @@
         l_messagebody = [[NSString alloc] initWithData:l_passdata encoding:NSUTF8StringEncoding];
         [l_theRequest addValue: @"application/json" forHTTPHeaderField:@"Content-Type"];
     }
+    else if ([_responseType isEqualToString:@"GETMYSTATUSFEED"])
+    {
+        l_url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/functions/getmystatusfeed",MAIN_API_HOST_URL]];
+        l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
+        l_requesttype = @"POST";
+        l_passdata = [NSJSONSerialization dataWithJSONObject:_inputParms options:kNilOptions error:&l_error];
+        l_messagebody = [[NSString alloc] initWithData:l_passdata encoding:NSUTF8StringEncoding];
+        [l_theRequest addValue: @"application/json" forHTTPHeaderField:@"Content-Type"];
+    }
     else if ([_responseType isEqualToString:@"GETFILE"])
     {
         l_url = [NSURL URLWithString:[_inputParms valueForKey:@"filename"]];

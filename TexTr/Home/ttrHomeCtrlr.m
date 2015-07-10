@@ -9,34 +9,29 @@
 #import "ttrHomeCtrlr.h"
 #import "ttrHomeStreamsView.h"
 #import "ttrRESTProxy.h"
-#import "ttrHomePullOverBtn.h"
-#import "ttrHomeMyStatusView.h"
+#import "ttrHomeDropOptions.h"
 
-@interface ttrHomeCtrlr ()<UISearchBarDelegate, ttrHomeStreamsViewDelegate, UIGestureRecognizerDelegate, ttrHomeMyStatusViewDelegate>
+@interface ttrHomeCtrlr ()<ttrHomeStreamsViewDelegate, UIGestureRecognizerDelegate,  ttrHomeDropDownOptionsDelegate>
 {
-    NSMutableArray * _groupstreams;
-    NSMutableArray * _statusfeeds;
-    UIPanGestureRecognizer * _panGesture;
-    UIView * _screenshotview;
-    CGPoint _swipeStart;
+    NSArray * _groupstreamsall;
+    NSMutableArray * _groupstreamsfiltered;
+    CGSize _keyBoardSize;
 }
 
-@property (nonatomic,strong) UISearchBar * itesearchbar;
 @property (nonatomic,strong) ttrHomeStreamsView * homestreamsTV;
-@property (nonatomic,strong) ttrHomePullOverBtn * homePullOver;
-@property (nonatomic,strong) ttrHomeMyStatusView * homeStatusFeedTV;
-@property (nonatomic, assign) BOOL hideStatusBar;
+@property (nonatomic,strong) ttrHomeDropOptions * homeDropMenuVw;
 
 @end
 
 @implementation ttrHomeCtrlr
 
-
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     self.transitionType = horizontalWithBounce;
+    self.showPullOver = YES;
     [self.view setBackgroundColor:[UIColor colorWithRed:0.94 green:0.97 blue:1.0 alpha:1.0]];
-    _groupstreams = [[NSMutableArray alloc] init];
+    _groupstreamsall = @[];
     [self initializeAllHomeStreams];
 }
 
@@ -44,9 +39,9 @@
     [super viewDidLoad];
     [self setUpDefaultItems];
     [self setupMainViews];
-    _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanSwipe:)];
-    _panGesture.delegate = self;
-    [self.view addGestureRecognizer:_panGesture];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardBecomesVisible:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardBecomesHidden:) name:UIKeyboardDidHideNotification object:nil];
     // Do any additional setup after loading the view.
 }
 
@@ -59,32 +54,13 @@
     self.navItem.rightBarButtonItems = @[self.bar_list_btn, self.bar_logo_btn] ;
 }
 
-- (void) setUpHomeStatusFeedViews
-{
-    self.homeStatusFeedTV = [ttrHomeMyStatusView new];
-    self.homeStatusFeedTV.translatesAutoresizingMaskIntoConstraints=NO;
-    self.homeStatusFeedTV.handlerDelegate = self;
-    [self.view addSubview:self.homeStatusFeedTV];
-    [self.view addConstraints:@[[NSLayoutConstraint constraintWithItem:self.homeStatusFeedTV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-80.0)],[NSLayoutConstraint constraintWithItem:self.homeStatusFeedTV attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.homeStatusFeedTV attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:(-1.0) constant:(40.0)],[NSLayoutConstraint constraintWithItem:self.homeStatusFeedTV attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]]];
-    [self.view layoutIfNeeded];
-    [self.homeStatusFeedTV setHidden:YES];
-}
-
 - (void) setupMainViews
 {
     self.homestreamsTV = [ttrHomeStreamsView new];
     self.homestreamsTV.translatesAutoresizingMaskIntoConstraints=NO;
     self.homestreamsTV.handlerDelegate = self;
     [self.view addSubview:self.homestreamsTV];
-    [self.view addConstraints:@[[NSLayoutConstraint constraintWithItem:self.homestreamsTV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.homestreamsTV attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0 constant:(-64.0-38.0)],[NSLayoutConstraint constraintWithItem:self.homestreamsTV attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.homestreamsTV attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:(32.0-19.0)]]];
-    
-    self.homePullOver = [ttrHomePullOverBtn new];
-    self.homePullOver.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.homePullOver];
-    [self.homePullOver addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[hp(20)]" options:0 metrics:nil views:@{@"hp":self.homePullOver}]];
-    [self.homePullOver addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[hp(90)]" options:0 metrics:nil views:@{@"hp":self.homePullOver}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hp]" options:0 metrics:nil views:@{@"hp":self.homePullOver}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-190-[hp]" options:0 metrics:nil views:@{@"hp":self.homePullOver}]];
+    [self.view addConstraints:@[[NSLayoutConstraint constraintWithItem:self.homestreamsTV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.homestreamsTV attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0 constant:(-64.0)],[NSLayoutConstraint constraintWithItem:self.homestreamsTV attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.homestreamsTV attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:32.0]]];
     [self.view layoutIfNeeded];
 }
 
@@ -102,26 +78,13 @@
                                       JSONObjectWithData:[p_groupsinfo valueForKey:@"resultdata"]
                                       options:NSJSONReadingMutableLeaves
                                       error:NULL];
-         _groupstreams = [NSMutableArray
-                          arrayWithArray:[l_recdinfo valueForKey:@"result"]];
+         _groupstreamsall = (NSArray*) [l_recdinfo valueForKey:@"result"];
+         _groupstreamsfiltered = [NSMutableArray arrayWithArray:_groupstreamsall];
          if (self.homestreamsTV)
          {
              [self.homestreamsTV reloadAllTheStreams];
          }
          [self.actView stopAnimating];
-     }];
-    [[ttrRESTProxy alloc]
-     initDatawithAPIType:@"GETMYSTATUSFEED"
-     andInputParams:@{@"userId":l_userId}
-     andReturnMethod:^(NSDictionary * p_groupsinfo)
-     {
-         NSDictionary * l_recdinfo = [NSJSONSerialization
-                                      JSONObjectWithData:[p_groupsinfo valueForKey:@"resultdata"]
-                                      options:NSJSONReadingMutableLeaves
-                                      error:NULL];
-         _statusfeeds = [NSMutableArray
-                          arrayWithArray:[l_recdinfo valueForKey:@"result"]];
-         [self setUpHomeStatusFeedViews];
      }];
 }
 
@@ -147,176 +110,97 @@
 }
 
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-- (BOOL)prefersStatusBarHidden
+- (void)dealloc
 {
-    return self.hideStatusBar;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void) executeListButtonClicked
+{
+    UIView * l_barprintvw = [self.bar_list_btn valueForKey:@"view"];
+    CGRect l_pointrect = [l_barprintvw convertRect:l_barprintvw.bounds toView:self.view];
+    CGPoint l_stPoint = CGPointMake(l_pointrect.origin.x-160.0, l_pointrect.origin.y+l_pointrect.size.height);
+    self.homeDropMenuVw = [[ttrHomeDropOptions alloc] initWithFrame:CGRectZero andSuperPoint:CGPointZero dataDelegate:self];
+    self.homeDropMenuVw.translatesAutoresizingMaskIntoConstraints = NO;
+    //_rptselector.startingFrame = l_pointrect;
+    [self.view addSubview:self.homeDropMenuVw];
+    self.homeDropMenuVw.alpha =0.05;
+    CGFloat l_shrink_x = l_pointrect.size.width / 160.0f;
+    CGFloat l_shrink_y = l_pointrect.size.height / 120.0f;
+    [self.homeDropMenuVw addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[popup(160)]" options:0 metrics:nil views:@{@"popup":self.homeDropMenuVw}]];
+    [self.homeDropMenuVw addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[popup(120)]" options:0 metrics:nil views:@{@"popup":self.homeDropMenuVw}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-xval-[popup]" options:0 metrics:@{@"xval":@(l_stPoint.x)} views:@{@"popup":self.homeDropMenuVw}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-yval-[popup]" options:0 metrics:@{@"yval":@(l_stPoint.y)} views:@{@"popup":self.homeDropMenuVw}]];
+    [self.view layoutIfNeeded];
+    CGAffineTransform l_totransform = CGAffineTransformConcat(CGAffineTransformMakeScale(l_shrink_x, l_shrink_y),CGAffineTransformMakeTranslation((+160.0/2.0), (-120.0/2.0)));
+    self.homeDropMenuVw.transform =l_totransform; // CGAffineTransformMakeScale(l_shrink_x, l_shrink_y);
+    self.homeDropMenuVw.alpha = 0.5;
+    self.homeDropMenuVw.originalTransform = l_totransform;
+    [UIView animateWithDuration:0.3
+                     animations:^(){
+                         self.homeDropMenuVw.transform = CGAffineTransformIdentity;
+                         self.homeDropMenuVw.alpha = 1.0;
+                     } completion:^(BOOL p_finished){
+                         [self.navBar setUserInteractionEnabled:NO];
+                         [self.homestreamsTV setUserInteractionEnabled:NO];
+                     }];
+}
+
+- (void) unloadPopUpDropdownSelection
+{
+    if (self.homeDropMenuVw.tag==1) return;
+    self.homeDropMenuVw.tag = 1;
+    [UIView animateWithDuration:0.3
+                     animations:^(){
+                         self.homeDropMenuVw.transform = self.homeDropMenuVw.originalTransform;
+                         self.homeDropMenuVw.alpha = 0.5;
+                     } completion:^(BOOL p_finished){
+                         self.homeDropMenuVw.tag = 0;
+                         [self.view layoutIfNeeded];
+                         [self.navBar setUserInteractionEnabled:YES];
+                         [self.homestreamsTV setUserInteractionEnabled:YES];
+                         [self.homeDropMenuVw removeFromSuperview];
+                         self.homeDropMenuVw = nil;
+                     }];
+}
+
+#pragma keyboard related notificaiton handlers
+
+- (void) keyboardBecomesVisible:(NSNotification*) p_visibeNotification
+{
+    NSDictionary * l_userInfo = [p_visibeNotification userInfo];
+    CGSize l_keyBoardSize = [[l_userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    [self.homestreamsTV setDataKeyBoardSize:l_keyBoardSize];
+}
+
+- (void) keyboardBecomesHidden:(NSNotification*) p_hidingNotification
+{
+    [self.homestreamsTV setDataKeyBoardSize:CGSizeZero];
 }
 
 #pragma gesture recognizer related delegates
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if ([gestureRecognizer isEqual:_panGesture])
+    if (self.homeDropMenuVw)
     {
-        CGPoint l_touchpoint = [touch locationInView:self.view];
-        BOOL l_pullovertouched = CGRectContainsPoint(self.homePullOver.frame, l_touchpoint);
-        if (self.homePullOver.frame.origin.x==0)
-        {
-            if (l_pullovertouched)
-                return YES;
-        }
-        else
-        {
-            if (l_pullovertouched)
-                [self cancelPullOverOfScreen];
-        }
+        [self unloadPopUpDropdownSelection];
+        return NO;
     }
     return NO;
 }
 
-- (void) cancelPullOverOfScreen
-{
-    [self.homePullOver setHidden:YES];
-    [self.homePullOver changeTheArrowDirectionToRight];
-    [UIView animateWithDuration:0.6
-                          delay:0
-         usingSpringWithDamping:0.6
-          initialSpringVelocity:0.1
-                        options:UIViewAnimationOptionAllowUserInteraction
-                     animations:^(){
-                         self.homeStatusFeedTV.transform = CGAffineTransformIdentity;
-                         _screenshotview.transform = CGAffineTransformIdentity;
-                         self.homePullOver.transform = CGAffineTransformIdentity;
-                     }
-                     completion:^(BOOL p_finished){
-                         [self.homePullOver setHidden:NO];
-                         [self.view bringSubviewToFront:self.homePullOver];
-                         self.hideStatusBar = NO;
-                         [self.navBar setHidden:NO];
-                         [self.homestreamsTV setHidden:NO];
-                         [self setNeedsStatusBarAppearanceUpdate];
-                         [_screenshotview removeFromSuperview];
-                         _screenshotview = nil;
-                         [self.homeStatusFeedTV setHidden:YES];
-                     }];
-}
-
-- (void) handlePanSwipe:(UIPanGestureRecognizer*) p_recognizer
-{
-    CGPoint l_touchPoint = [p_recognizer translationInView:self.view];
-    switch (p_recognizer.state){
-        case UIGestureRecognizerStateBegan:
-        {
-            self.hideStatusBar = YES;
-            [self.homePullOver setHidden:YES];
-            _screenshotview = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
-            [_screenshotview setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-            [self.view addSubview:_screenshotview];
-            [self.navBar setHidden:YES];
-            [self.homestreamsTV setHidden:YES];
-            [self setNeedsStatusBarAppearanceUpdate];
-            _swipeStart = l_touchPoint;
-            [self.homeStatusFeedTV setHidden:NO];
-            break;
-        }
-        case UIGestureRecognizerStateChanged:
-        {
-            CGFloat l_shiftoffset = l_touchPoint.x - _swipeStart.x;
-            if (l_shiftoffset>self.homeStatusFeedTV.frame.size.width)
-            {
-                l_shiftoffset = self.homeStatusFeedTV.frame.size.width;
-            }
-            self.homeStatusFeedTV.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
-            _screenshotview.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
-            break;
-        }
-        case UIGestureRecognizerStateEnded:
-        {
-            CGFloat l_shiftoffset = l_touchPoint.x - _swipeStart.x;
-            if (l_shiftoffset>(self.homeStatusFeedTV.frame.size.width/3.0))
-                l_shiftoffset = self.homeStatusFeedTV.frame.size.width;
-            else
-                l_shiftoffset = 0;
-            [UIView animateWithDuration:0.6
-                                  delay:0
-                 usingSpringWithDamping:0.6
-                  initialSpringVelocity:0.1
-                                options:UIViewAnimationOptionAllowUserInteraction
-                             animations:^(){
-                                 self.homeStatusFeedTV.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
-                                 _screenshotview.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
-                                 self.homePullOver.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
-                             }
-                             completion:^(BOOL p_finished){
-                                 [self.homePullOver setHidden:NO];
-                                 [self.view bringSubviewToFront:self.homePullOver];
-                                 if (l_shiftoffset==0)
-                                 {
-                                     self.hideStatusBar = NO;
-                                     [self.navBar setHidden:NO];
-                                     [self.homestreamsTV setHidden:NO];
-                                     [self setNeedsStatusBarAppearanceUpdate];
-                                     [_screenshotview removeFromSuperview];
-                                     _screenshotview = nil;
-                                     [self.homeStatusFeedTV setHidden:YES];
-                                 }
-                                 else
-                                 {
-                                     [self.homePullOver changeTheArrowDirectionToLeft];
-                                 }
-                             }];
-            break;
-        }
-        default:
-            break;
-    }
-}
-
-#pragma  search bar customer search string related delegates
-
--(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
-    searchBar.showsCancelButton = YES;
-    searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-}
-
--(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-{
-    searchBar.showsCancelButton = NO;
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-    searchBar.text = nil;
-}
-
-// called when Search (in our case “Done”) button pressed
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-}
 
 #pragma home controller search view delegates
 
 - (NSInteger) getNumberOfStreams
 {
-    return [_groupstreams count];
+    return [_groupstreamsfiltered count];
 }
 
 - (BOOL) checkIfGroupImageAvailable:(NSInteger) p_posnNo
 {
-    if ([[_groupstreams objectAtIndex:p_posnNo] valueForKey:@"groupimg"])
+    if ([[_groupstreamsfiltered objectAtIndex:p_posnNo] valueForKey:@"groupimg"])
         return YES;
     else
         return NO;
@@ -324,19 +208,49 @@
 
 - (NSDictionary*) getStreamDataAtPosn:(NSInteger) p_posnNo
 {
-    return [_groupstreams objectAtIndex:p_posnNo];
+    return [_groupstreamsfiltered objectAtIndex:p_posnNo];
 }
 
-#pragma home status feed delegate
-
-- (NSInteger) getNumberOfMyStatusStream
+- (void) generateStreamsForSearchStr:(NSString*) p_searchStr
 {
-    return [_statusfeeds count];
+    if (p_searchStr!=nil && [p_searchStr length]>0)
+    {
+        NSPredicate * l_streamsearch =
+        [NSPredicate predicateWithFormat:@"title CONTAINS[c] %@ || description CONTAINS[c] %@ ", p_searchStr, p_searchStr];
+        _groupstreamsfiltered = [NSMutableArray arrayWithArray:[_groupstreamsall filteredArrayUsingPredicate:l_streamsearch]];
+    }
+    else
+    {
+        _groupstreamsfiltered = [NSMutableArray arrayWithArray:_groupstreamsall];
+    }
+    [self.homestreamsTV reloadAllTheStreams];
 }
 
-- (NSDictionary*) getMyStatusStreamDataAtPosn:(NSInteger) p_posnNo
+- (void)showGroupForViewingFromStreamAtPosn:(NSInteger)p_posnNo
 {
-    return [_statusfeeds objectAtIndex:p_posnNo];
+    
+}
+
+#pragma drop down options popup delegates
+
+- (void) optionCellSelected:(NSInteger) p_cellRowNo andFrame:(CGRect) p_cellFrame
+{
+    switch (p_cellRowNo) {
+        case 0: // self user profile
+        {
+            [self.view bringSubviewToFront:self.actView];
+            [self.actView startAnimating];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.navigateParams = @{@"profileid":[[NSUserDefaults standardUserDefaults] valueForKey:@"userId"]};
+                [self performSegueWithIdentifier:@"showselfprofile" sender:self];
+                [self.actView stopAnimating];
+            });
+            break;
+        }
+        default:
+            break;
+    }
+    [self unloadPopUpDropdownSelection];
 }
 
 @end

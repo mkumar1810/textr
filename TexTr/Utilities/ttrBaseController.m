@@ -16,8 +16,8 @@
 
 @synthesize transitionType;
 @synthesize navigateParams;
-
-
+@synthesize showPullOver;
+@synthesize hideStatusBar;
 
 - (instancetype)init
 {
@@ -182,6 +182,11 @@
 - (void) executeListButtonClicked
 {
     
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return self.hideStatusBar;
 }
 
 #pragma navigation delegates custom

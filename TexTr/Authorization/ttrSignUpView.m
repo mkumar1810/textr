@@ -506,6 +506,11 @@
     _profileView.image = [UIImage imageNamed:@"nophoto"];
     _profileView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_profileView];
+    [_profileView.layer setBorderWidth:1.0f];
+    _profileView.layer.cornerRadius = 5.0f;
+    [_profileView.layer setBorderColor:[UIColor clearColor].CGColor];
+    _profileView.layer.masksToBounds=YES;
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[pv]" options:0 metrics:nil views:@{@"pv":_profileView}]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[pv]" options:0 metrics:nil views:@{@"pv":_profileView}]];
     [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_profileView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:(-20.0)],[NSLayoutConstraint constraintWithItem:_profileView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:(-20.0)]]];

@@ -10,15 +10,21 @@
 		0104F04A1B3C0C11009A079E /* ttrHomeCtrlr.m in Sources */ = {isa = PBXBuildFile; fileRef = 0104F0491B3C0C11009A079E /* ttrHomeCtrlr.m */; };
 		0104F04E1B3C424A009A079E /* ttrGroupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0104F04D1B3C424A009A079E /* ttrGroupController.m */; };
 		0104F0511B3C5389009A079E /* ttrGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0104F0501B3C5389009A079E /* ttrGroupView.m */; };
+		01167C021B4AB5FA00DC99F1 /* ttrUserProfileCtrlr.m in Sources */ = {isa = PBXBuildFile; fileRef = 01167C011B4AB5FA00DC99F1 /* ttrUserProfileCtrlr.m */; };
+		01167C051B4AB65C00DC99F1 /* ttrProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01167C041B4AB65C00DC99F1 /* ttrProfileView.m */; };
 		011B75A11B3B85BE001D2119 /* ttrLoginCtrlr.m in Sources */ = {isa = PBXBuildFile; fileRef = 011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */; };
 		011B75A41B3B86D5001D2119 /* ttrLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011B75A31B3B86D5001D2119 /* ttrLoginView.m */; };
 		011F41AC1B417ACC00145074 /* ttrHomePullOverBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 011F41AB1B417ACC00145074 /* ttrHomePullOverBtn.m */; };
 		0135D67A1B42C2BD000BD9A2 /* ttrHomeMyStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0135D6791B42C2BD000BD9A2 /* ttrHomeMyStatusView.m */; };
+		014D601C1B4F89BA0054BAC2 /* ttrFriendFollowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D601B1B4F89BA0054BAC2 /* ttrFriendFollowController.m */; };
+		014D601F1B4F8A200054BAC2 /* ttrFriendsListVw.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D601E1B4F8A200054BAC2 /* ttrFriendsListVw.m */; };
+		014D60221B4FB69C0054BAC2 /* ttrFollowersList.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D60211B4FB69C0054BAC2 /* ttrFollowersList.m */; };
 		017B58B71B381051002A0ED6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B58B61B381051002A0ED6 /* main.m */; };
 		017B58BA1B381051002A0ED6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B58B91B381051002A0ED6 /* AppDelegate.m */; };
 		017B58C01B381051002A0ED6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 017B58BE1B381051002A0ED6 /* Main.storyboard */; };
 		017B58C21B381051002A0ED6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 017B58C11B381051002A0ED6 /* Images.xcassets */; };
 		017B58D11B381051002A0ED6 /* TexTrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B58D01B381051002A0ED6 /* TexTrTests.m */; };
+		01D2468B1B4441B900400BC3 /* ttrHomeDropOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D2468A1B4441B900400BC3 /* ttrHomeDropOptions.m */; };
 		01D728481B38262A004C3F52 /* ttrBaseNavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D728471B38262A004C3F52 /* ttrBaseNavController.m */; };
 		01D7284B1B38264C004C3F52 /* ttrDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D7284A1B38264C004C3F52 /* ttrDefaults.m */; };
 		01D7284E1B382662004C3F52 /* ttrBaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D7284D1B382662004C3F52 /* ttrBaseController.m */; };
@@ -52,6 +58,10 @@
 		0104F04D1B3C424A009A079E /* ttrGroupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrGroupController.m; sourceTree = "<group>"; };
 		0104F04F1B3C5389009A079E /* ttrGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrGroupView.h; sourceTree = "<group>"; };
 		0104F0501B3C5389009A079E /* ttrGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrGroupView.m; sourceTree = "<group>"; };
+		01167C001B4AB5FA00DC99F1 /* ttrUserProfileCtrlr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrUserProfileCtrlr.h; sourceTree = "<group>"; };
+		01167C011B4AB5FA00DC99F1 /* ttrUserProfileCtrlr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrUserProfileCtrlr.m; sourceTree = "<group>"; };
+		01167C031B4AB65C00DC99F1 /* ttrProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrProfileView.h; sourceTree = "<group>"; };
+		01167C041B4AB65C00DC99F1 /* ttrProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrProfileView.m; sourceTree = "<group>"; };
 		011B759F1B3B85BE001D2119 /* ttrLoginCtrlr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrLoginCtrlr.h; sourceTree = "<group>"; };
 		011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrLoginCtrlr.m; sourceTree = "<group>"; };
 		011B75A21B3B86D5001D2119 /* ttrLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrLoginView.h; sourceTree = "<group>"; };
@@ -60,6 +70,12 @@
 		011F41AB1B417ACC00145074 /* ttrHomePullOverBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrHomePullOverBtn.m; sourceTree = "<group>"; };
 		0135D6781B42C2BD000BD9A2 /* ttrHomeMyStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrHomeMyStatusView.h; sourceTree = "<group>"; };
 		0135D6791B42C2BD000BD9A2 /* ttrHomeMyStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrHomeMyStatusView.m; sourceTree = "<group>"; };
+		014D601A1B4F89BA0054BAC2 /* ttrFriendFollowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrFriendFollowController.h; sourceTree = "<group>"; };
+		014D601B1B4F89BA0054BAC2 /* ttrFriendFollowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrFriendFollowController.m; sourceTree = "<group>"; };
+		014D601D1B4F8A200054BAC2 /* ttrFriendsListVw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrFriendsListVw.h; sourceTree = "<group>"; };
+		014D601E1B4F8A200054BAC2 /* ttrFriendsListVw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrFriendsListVw.m; sourceTree = "<group>"; };
+		014D60201B4FB69C0054BAC2 /* ttrFollowersList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrFollowersList.h; sourceTree = "<group>"; };
+		014D60211B4FB69C0054BAC2 /* ttrFollowersList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrFollowersList.m; sourceTree = "<group>"; };
 		017B58B11B381051002A0ED6 /* TexTr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TexTr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		017B58B51B381051002A0ED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		017B58B61B381051002A0ED6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -70,6 +86,8 @@
 		017B58CA1B381051002A0ED6 /* TexTrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TexTrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		017B58CF1B381051002A0ED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		017B58D01B381051002A0ED6 /* TexTrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TexTrTests.m; sourceTree = "<group>"; };
+		01D246891B4441B900400BC3 /* ttrHomeDropOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrHomeDropOptions.h; sourceTree = "<group>"; };
+		01D2468A1B4441B900400BC3 /* ttrHomeDropOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrHomeDropOptions.m; sourceTree = "<group>"; };
 		01D728461B38262A004C3F52 /* ttrBaseNavController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrBaseNavController.h; sourceTree = "<group>"; };
 		01D728471B38262A004C3F52 /* ttrBaseNavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrBaseNavController.m; sourceTree = "<group>"; };
 		01D728491B38264C004C3F52 /* ttrDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrDefaults.h; sourceTree = "<group>"; };
@@ -129,6 +147,19 @@
 			path = Group;
 			sourceTree = "<group>";
 		};
+		014D60191B4F89900054BAC2 /* FriendFollow */ = {
+			isa = PBXGroup;
+			children = (
+				014D601A1B4F89BA0054BAC2 /* ttrFriendFollowController.h */,
+				014D601B1B4F89BA0054BAC2 /* ttrFriendFollowController.m */,
+				014D601D1B4F8A200054BAC2 /* ttrFriendsListVw.h */,
+				014D601E1B4F8A200054BAC2 /* ttrFriendsListVw.m */,
+				014D60201B4FB69C0054BAC2 /* ttrFollowersList.h */,
+				014D60211B4FB69C0054BAC2 /* ttrFollowersList.m */,
+			);
+			path = FriendFollow;
+			sourceTree = "<group>";
+		};
 		017B58A81B381051002A0ED6 = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +182,7 @@
 		017B58B31B381051002A0ED6 /* TexTr */ = {
 			isa = PBXGroup;
 			children = (
+				014D60191B4F89900054BAC2 /* FriendFollow */,
 				0104F04B1B3C4237009A079E /* Group */,
 				01D728551B3829CC004C3F52 /* Authorization */,
 				01D728431B3824A6004C3F52 /* Home */,
@@ -201,6 +233,8 @@
 				011F41AB1B417ACC00145074 /* ttrHomePullOverBtn.m */,
 				0135D6781B42C2BD000BD9A2 /* ttrHomeMyStatusView.h */,
 				0135D6791B42C2BD000BD9A2 /* ttrHomeMyStatusView.m */,
+				01D246891B4441B900400BC3 /* ttrHomeDropOptions.h */,
+				01D2468A1B4441B900400BC3 /* ttrHomeDropOptions.m */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -243,6 +277,10 @@
 				011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */,
 				011B75A21B3B86D5001D2119 /* ttrLoginView.h */,
 				011B75A31B3B86D5001D2119 /* ttrLoginView.m */,
+				01167C001B4AB5FA00DC99F1 /* ttrUserProfileCtrlr.h */,
+				01167C011B4AB5FA00DC99F1 /* ttrUserProfileCtrlr.m */,
+				01167C031B4AB65C00DC99F1 /* ttrProfileView.h */,
+				01167C041B4AB65C00DC99F1 /* ttrProfileView.m */,
 			);
 			path = Authorization;
 			sourceTree = "<group>";
@@ -353,18 +391,24 @@
 				01D7284E1B382662004C3F52 /* ttrBaseController.m in Sources */,
 				01D7285E1B385630004C3F52 /* ttrSignUpView.m in Sources */,
 				01D728581B3829EE004C3F52 /* ttrSgnLgnOptionScreen.m in Sources */,
+				01D2468B1B4441B900400BC3 /* ttrHomeDropOptions.m in Sources */,
 				01D728511B382846004C3F52 /* ttrCommonUtilities.m in Sources */,
+				014D60221B4FB69C0054BAC2 /* ttrFollowersList.m in Sources */,
 				011B75A41B3B86D5001D2119 /* ttrLoginView.m in Sources */,
+				01167C021B4AB5FA00DC99F1 /* ttrUserProfileCtrlr.m in Sources */,
 				0104F04E1B3C424A009A079E /* ttrGroupController.m in Sources */,
 				011F41AC1B417ACC00145074 /* ttrHomePullOverBtn.m in Sources */,
 				01E8DF9A1B3D602600381D44 /* ttrHomeStreamsView.m in Sources */,
+				014D601F1B4F8A200054BAC2 /* ttrFriendsListVw.m in Sources */,
 				0104F0511B3C5389009A079E /* ttrGroupView.m in Sources */,
 				01D728541B38291E004C3F52 /* ttrBaseNavigatorSegue.m in Sources */,
+				01167C051B4AB65C00DC99F1 /* ttrProfileView.m in Sources */,
 				017B58BA1B381051002A0ED6 /* AppDelegate.m in Sources */,
 				01E57BF01B3AC182006C4047 /* ttrCaptureDate.m in Sources */,
 				01D7284B1B38264C004C3F52 /* ttrDefaults.m in Sources */,
 				017B58B71B381051002A0ED6 /* main.m in Sources */,
 				0104F04A1B3C0C11009A079E /* ttrHomeCtrlr.m in Sources */,
+				014D601C1B4F89BA0054BAC2 /* ttrFriendFollowController.m in Sources */,
 				011B75A11B3B85BE001D2119 /* ttrLoginCtrlr.m in Sources */,
 				01D728481B38262A004C3F52 /* ttrBaseNavController.m in Sources */,
 				01D7285B1B384AFC004C3F52 /* ttrSignUpCtrlr.m in Sources */,
@@ -432,7 +476,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -446,9 +490,10 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Chowdary Adusumilli (XRFSBJJGBT)";
 				INFOPLIST_FILE = TexTr/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e6541685-80d6-4e8d-8b7d-b43763cf7b3f";
+				PROVISIONING_PROFILE = "d4b9fea6-4c71-4260-a49f-5e726835e36e";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Distribution;
@@ -504,7 +549,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -541,7 +586,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -555,6 +600,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TexTr/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -569,6 +615,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TexTr/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

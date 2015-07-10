@@ -13,13 +13,18 @@
 - (NSInteger) getNumberOfStreams;
 - (BOOL) checkIfGroupImageAvailable:(NSInteger) p_posnNo;
 - (NSDictionary*) getStreamDataAtPosn:(NSInteger) p_posnNo;
+- (void) generateStreamsForSearchStr:(NSString*) p_searchStr;
+//- (void) addCommentOnStreamAtPosn:(NSInteger) p_posnNo;
+- (void) showGroupForViewingFromStreamAtPosn:(NSInteger) p_posnNo;
 
 @end
 
-@interface ttrHomeStreamsView : UIView
+@interface ttrHomeStreamsView : UIScrollView
 
 @property (nonatomic,weak) id<ttrHomeStreamsViewDelegate> handlerDelegate;
+
 - (void) reloadAllTheStreams;
+- (void) setDataKeyBoardSize:(CGSize) p_keyboardSize;
 
 @end
 

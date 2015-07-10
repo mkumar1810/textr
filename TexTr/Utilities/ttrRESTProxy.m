@@ -106,10 +106,35 @@
         l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
         l_requesttype = @"GET";
     }
+    else if ([_responseType isEqualToString:@"USERINFOUPDATE"])
+    {
+        l_url = [NSURL
+                 URLWithString:[NSString
+                                stringWithFormat:@"%@/users/%@",
+                                MAIN_API_HOST_URL,[_inputParms valueForKey:@"userid"]]];
+        l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
+        l_requesttype = @"PUT";
+        l_passdata = [NSJSONSerialization dataWithJSONObject:[_inputParms valueForKey:@"saveinfo"] options:kNilOptions error:&l_error];
+        l_messagebody = [[NSString alloc] initWithData:l_passdata encoding:NSUTF8StringEncoding];
+        [l_theRequest addValue: @"application/json" forHTTPHeaderField:@"Content-Type"];
+    }
+    else
+    {
+        l_url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/functions/%@",MAIN_API_HOST_URL, [_responseType lowercaseString]]];
+        l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
+        l_requesttype = @"POST";
+        l_passdata = [NSJSONSerialization dataWithJSONObject:_inputParms options:kNilOptions error:&l_error];
+        l_messagebody = [[NSString alloc] initWithData:l_passdata encoding:NSUTF8StringEncoding];
+        [l_theRequest addValue: @"application/json" forHTTPHeaderField:@"Content-Type"];
+    }
     [l_theRequest setHTTPMethod:l_requesttype];
     [l_theRequest addValue:PARSE_APPLICATION_ID forHTTPHeaderField:@"X-Parse-Application-Id"];
     [l_theRequest addValue:PARSE_REST_API_KEY forHTTPHeaderField:@"X-Parse-REST-API-Key"];
-    if ([l_requesttype isEqualToString:@"POST"])
+    if ([[NSUserDefaults standardUserDefaults] valueForKey:@"sessionToken"])
+    {
+        [l_theRequest addValue: [[NSUserDefaults standardUserDefaults] valueForKey:@"sessionToken"] forHTTPHeaderField:@"X-Parse-Session-Token"];
+    }
+    if ([l_requesttype isEqualToString:@"POST"] | [l_requesttype isEqualToString:@"PUT"])
     {
         if (l_error!=nil)
         {
@@ -130,7 +155,10 @@
 
 - (void) returnErrorMessage:(NSString*) p_errMsg
 {
-    _proxyReturnMethod(@{@"error":@"-1", @"errmsg":p_errMsg});
+    if (_proxyReturnMethod!=NULL)
+    {
+        _proxyReturnMethod(@{@"error":@"-1", @"errmsg":p_errMsg});
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -145,7 +173,12 @@
 
 - (void) connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    _proxyReturnMethod(@{@"error":@"0", @"resultdata":_webData});
+    if (_proxyReturnMethod!=NULL)
+    {
+        _proxyReturnMethod(@{@"error":@"0", @"resultdata":_webData});
+    }
+    else
+        NSLog(@"the result is %@", [[NSString alloc] initWithData:_webData encoding:NSUTF8StringEncoding]);
 }
 
 - (void) connection:(NSURLConnection *)connection didFailWithError:(NSError *)error

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="DQZ-8X-xPE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="DQZ-8X-xPE">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
@@ -81,11 +82,70 @@
                     </view>
                     <connections>
                         <segue destination="Lf8-h3-q0v" kind="custom" identifier="createnewgroup" customClass="ttrBaseNavigatorSegue" id="tkN-OQ-TIH"/>
+                        <segue destination="HVg-gS-7gw" kind="custom" identifier="showselfprofile" customClass="ttrBaseNavigatorSegue" id="HaH-Lr-k41"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jhJ-C9-BIs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="774" y="699"/>
+        </scene>
+        <!--Ttr User Profile Ctrlr-->
+        <scene sceneID="RFv-Uv-iZA">
+            <objects>
+                <viewController id="HVg-gS-7gw" customClass="ttrUserProfileCtrlr" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MM5-Ac-1O3"/>
+                        <viewControllerLayoutGuide type="bottom" id="YlJ-ds-Cd2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XEw-ND-pKB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="SYq-qB-b3w" kind="custom" identifier="showfriendsforuser" customClass="ttrBaseNavigatorSegue" id="rkq-sz-i9n"/>
+                        <segue destination="8Kc-3j-QnN" kind="custom" identifier="showfollowersforuser" customClass="ttrBaseNavigatorSegue" id="fm8-Bw-Ggt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dpk-8x-qmn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1296" y="699"/>
+        </scene>
+        <!--Showng Friends of User-->
+        <scene sceneID="eMo-ek-Xsd">
+            <objects>
+                <viewController title="Showng Friends of User" id="SYq-qB-b3w" customClass="ttrFriendFollowController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xZs-gl-ZBn"/>
+                        <viewControllerLayoutGuide type="bottom" id="fQ4-gB-YV4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ro2-as-xl0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4s4-Me-cIK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1722" y="534"/>
+        </scene>
+        <!--Showing followers of User-->
+        <scene sceneID="gkZ-ce-cSm">
+            <objects>
+                <viewController title="Showing followers of User" id="8Kc-3j-QnN" customClass="ttrFriendFollowController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Yrq-X9-daB"/>
+                        <viewControllerLayoutGuide type="bottom" id="gc9-DL-33S"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EjF-lL-tGd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D6s-QT-ILN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1730" y="1199"/>
         </scene>
         <!--New Group Creation-->
         <scene sceneID="Xyv-8e-18I">

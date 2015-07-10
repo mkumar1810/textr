@@ -7,8 +7,21 @@
 //
 
 #import "ttrBaseNavController.h"
+#import "ttrHomePullOverBtn.h"
+#import "ttrHomeMyStatusView.h"
+#import "ttrRESTProxy.h"
 
-@interface ttrBaseNavController ()
+@interface ttrBaseNavController ()<UIGestureRecognizerDelegate,ttrHomeMyStatusViewDelegate>
+{
+    UIPanGestureRecognizer * _panGesture;
+    NSMutableArray * _statusfeeds;
+    UIView * _screenshotview;
+    CGPoint _swipeStart;
+    id<ttrCustNaviDelegates>  _showingctrlr;
+}
+
+@property (nonatomic,strong) ttrHomePullOverBtn * homePullOver;
+@property (nonatomic,strong) ttrHomeMyStatusView * homeStatusFeedTV;
 
 @end
 
@@ -22,12 +35,217 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationBarHidden = YES;
+    [self setUpHomeStatusFeedViews];
+    [self initializeMyStatusFeed];
+    _panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanSwipe:)];
+    _panGesture.delegate = self;
+    [self.view addGestureRecognizer:_panGesture];
+    
     // Do any additional setup after loading the view.
+}
+
+- (void)initializeMyStatusFeed
+{
+    NSString * l_userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+    if (!l_userId)
+    {
+        return;
+    }
+    [[ttrRESTProxy alloc]
+     initDatawithAPIType:@"GETMYSTATUSFEED"
+     andInputParams:@{@"userId":l_userId}
+     andReturnMethod:^(NSDictionary * p_groupsinfo)
+     {
+         if ([[p_groupsinfo valueForKey:@"error"] integerValue]==0)
+         {
+             NSDictionary * l_recdinfo = [NSJSONSerialization
+                                          JSONObjectWithData:[p_groupsinfo valueForKey:@"resultdata"]
+                                          options:NSJSONReadingMutableLeaves
+                                          error:NULL];
+             _statusfeeds = [NSMutableArray
+                             arrayWithArray:[l_recdinfo valueForKey:@"result"]];
+         }
+         else
+             _statusfeeds = [NSMutableArray arrayWithArray:@[]];
+         [self setUpHomeStatusFeedViews];
+     }];
+}
+
+- (void) setUpHomeStatusFeedViews
+{
+    if (self.homeStatusFeedTV) {
+        [self.homeStatusFeedTV reloadAllMyStatusStreams];
+        return;
+    }
+    self.homeStatusFeedTV = [ttrHomeMyStatusView new];
+    self.homeStatusFeedTV.translatesAutoresizingMaskIntoConstraints=NO;
+    self.homeStatusFeedTV.handlerDelegate = self;
+    [self.view addSubview:self.homeStatusFeedTV];
+    [self.view addConstraints:@[[NSLayoutConstraint constraintWithItem:self.homeStatusFeedTV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-80.0)],[NSLayoutConstraint constraintWithItem:self.homeStatusFeedTV attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.homeStatusFeedTV attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:(-1.0) constant:(40.0)],[NSLayoutConstraint constraintWithItem:self.homeStatusFeedTV attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]]];
+    self.homePullOver = [ttrHomePullOverBtn new];
+    self.homePullOver.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.homePullOver];
+    [self.homePullOver addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[hp(20)]" options:0 metrics:nil views:@{@"hp":self.homePullOver}]];
+    [self.homePullOver addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[hp(90)]" options:0 metrics:nil views:@{@"hp":self.homePullOver}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[hp]" options:0 metrics:nil views:@{@"hp":self.homePullOver}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-190-[hp]" options:0 metrics:nil views:@{@"hp":self.homePullOver}]];
+    [self.view layoutIfNeeded];
+    [self.homeStatusFeedTV setHidden:YES];
+    [self.homePullOver setHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void) cancelPullOverOfScreen
+{
+    [self.homePullOver setHidden:YES];
+    [self.homePullOver changeTheArrowDirectionToRight];
+    [UIView animateWithDuration:0.6
+                          delay:0
+         usingSpringWithDamping:0.6
+          initialSpringVelocity:0.1
+                        options:UIViewAnimationOptionAllowUserInteraction
+                     animations:^(){
+                         self.homeStatusFeedTV.transform = CGAffineTransformIdentity;
+                         _screenshotview.transform = CGAffineTransformIdentity;
+                         self.homePullOver.transform = CGAffineTransformIdentity;
+                     }
+                     completion:^(BOOL p_finished){
+                         [self.homePullOver setHidden:NO];
+                         [self.view bringSubviewToFront:self.homePullOver];
+                         _showingctrlr.hideStatusBar = NO;
+                         [self.navigationBar setHidden:NO];
+                         [self.visibleViewController.view setHidden:NO];
+                         [self setNeedsStatusBarAppearanceUpdate];
+                         [_screenshotview removeFromSuperview];
+                         _screenshotview = nil;
+                         [self.homeStatusFeedTV setHidden:YES];
+                     }];
+}
+
+- (void) handlePanSwipe:(UIPanGestureRecognizer*) p_recognizer
+{
+    CGPoint l_touchPoint = [p_recognizer translationInView:self.view];
+    switch (p_recognizer.state){
+        case UIGestureRecognizerStateBegan:
+        {
+            _showingctrlr.hideStatusBar = YES;
+            //[self.homePullOver setHidden:YES];
+            _screenshotview = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:YES];
+            [_screenshotview setFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+            [self.view addSubview:_screenshotview];
+            [self.navigationBar setHidden:YES];
+            [self.visibleViewController.view setHidden:YES];
+            [self setNeedsStatusBarAppearanceUpdate];
+            _swipeStart = l_touchPoint;
+            [self.homeStatusFeedTV setHidden:NO];
+            break;
+        }
+        case UIGestureRecognizerStateChanged:
+        {
+            CGFloat l_shiftoffset = l_touchPoint.x - _swipeStart.x;
+            if (l_shiftoffset>self.homeStatusFeedTV.frame.size.width)
+            {
+                l_shiftoffset = self.homeStatusFeedTV.frame.size.width;
+            }
+            self.homeStatusFeedTV.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
+            _screenshotview.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
+            break;
+        }
+        case UIGestureRecognizerStateEnded:
+        {
+            CGFloat l_shiftoffset = l_touchPoint.x - _swipeStart.x;
+            if (l_shiftoffset>(self.homeStatusFeedTV.frame.size.width/3.0))
+                l_shiftoffset = self.homeStatusFeedTV.frame.size.width;
+            else
+                l_shiftoffset = 0;
+            [UIView animateWithDuration:0.6
+                                  delay:0
+                 usingSpringWithDamping:0.6
+                  initialSpringVelocity:0.1
+                                options:UIViewAnimationOptionAllowUserInteraction
+                             animations:^(){
+                                 self.homeStatusFeedTV.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
+                                 _screenshotview.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
+                                 self.homePullOver.transform = CGAffineTransformMakeTranslation(l_shiftoffset, 0);
+                             }
+                             completion:^(BOOL p_finished){
+                                 [self.homePullOver setHidden:NO];
+                                 [self.view bringSubviewToFront:self.homePullOver];
+                                 if (l_shiftoffset==0)
+                                 {
+                                     _showingctrlr.hideStatusBar = NO;
+                                     [self.navigationBar setHidden:NO];
+                                     [self.visibleViewController.view setHidden:NO];
+                                     [self setNeedsStatusBarAppearanceUpdate];
+                                     [_screenshotview removeFromSuperview];
+                                     _screenshotview = nil;
+                                     [self.homeStatusFeedTV setHidden:YES];
+                                 }
+                                 else
+                                 {
+                                     [self.homePullOver changeTheArrowDirectionToLeft];
+                                 }
+                             }];
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.topViewController.preferredStatusBarStyle;
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return self.topViewController.prefersStatusBarHidden;
+}
+
+#pragma home status feed delegate
+
+- (NSInteger) getNumberOfMyStatusStream
+{
+    return [_statusfeeds count];
+}
+
+- (NSDictionary*) getMyStatusStreamDataAtPosn:(NSInteger) p_posnNo
+{
+    return [_statusfeeds objectAtIndex:p_posnNo];
+}
+
+#pragma gesture recognizer related delegates
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if (_showingctrlr.showPullOver)
+    {
+        if ([gestureRecognizer isEqual:_panGesture])
+        {
+            CGPoint l_touchpoint = [touch locationInView:self.view];
+            BOOL l_pullovertouched = CGRectContainsPoint(self.homePullOver.frame, l_touchpoint);
+            if (self.homePullOver.frame.origin.x==0)
+            {
+                if (l_pullovertouched)
+                    return YES;
+            }
+            else
+            {
+                if (l_pullovertouched)
+                {
+                    [self cancelPullOverOfScreen];
+                    return NO;
+                }
+            }
+        }
+    }
+    return NO;
 }
 
 #pragma navigation controller delegates
@@ -40,6 +258,21 @@
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC
 {
     return [[ttrNavControllerTransitionAnimator alloc] initWithNavOperation:operation];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    _showingctrlr = (id<ttrCustNaviDelegates>) viewController;
+    if (_showingctrlr.showPullOver)
+    {
+        [self initializeMyStatusFeed];
+        [self.homePullOver setHidden:NO];
+        [self.view bringSubviewToFront:self.homePullOver];
+    }
+    else
+    {
+        [self.homePullOver setHidden:YES];
+    }
 }
 
 @end
@@ -193,6 +426,63 @@
              finalFrame:l_finalFrame withCB:l_completionCB
              andPopCB:l_popCB];
     }
+    else if (l_currTransitionType == rotatedFreeFallFromTop)
+    {
+        if ( _navOperation == UINavigationControllerOperationPush)
+            [self
+             makeRotatedFreefallPushFrom:[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view
+             to:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view
+             onContainer:[transitionContext containerView]
+             duration:[self transitionDuration:transitionContext]
+             withCompletionCB:l_completionCB
+             andPushCB:l_pushCB];
+        else
+            [self
+             makeRotatedFreefallPopFrom:[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view
+             to:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view
+             onContainer:[transitionContext containerView]
+             duration:[self transitionDuration:transitionContext]
+             withCompletionCB:l_completionCB
+             andPopCB:l_popCB];
+    }
+    else if (l_currTransitionType==pageCurlRightToTop)
+    {
+        if ( _navOperation == UINavigationControllerOperationPush)
+            [self
+             makePageCurlRightPushFrom:[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view
+             to:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view
+             onContainer:[transitionContext containerView]
+             duration:[self transitionDuration:transitionContext]
+             withCompletionCB:l_completionCB
+             andPushCB:l_pushCB];
+        else
+            [self
+             makePageCurlRightPopFrom:[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view
+             to:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view
+             onContainer:[transitionContext containerView]
+             duration:[self transitionDuration:transitionContext]
+             withCompletionCB:l_completionCB
+             andPopCB:l_popCB];
+    }
+    else if (l_currTransitionType==horizontalFlipFromRight)
+    {
+        if ( _navOperation == UINavigationControllerOperationPush)
+            [self
+             makeHorizontalRightFlipPushFrom:[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view
+             to:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view
+             onContainer:[transitionContext containerView]
+             duration:[self transitionDuration:transitionContext]
+             withCB:l_completionCB
+             andPushCB:l_pushCB];
+        else
+            [self
+             makeHorizontalRightFlipPopFrom:[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view
+             to:[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view
+             onContainer:[transitionContext containerView]
+             duration:[self transitionDuration:transitionContext]
+             withCB:l_completionCB
+             andPopCB:l_popCB];
+    }
 }
 
 - (UIImage*) captureView:(UIView*) p_passview
@@ -207,6 +497,108 @@
 }
 
 #pragma generic navigation delegate methods
+
+- (void)makeRotatedFreefallPushFrom:(UIView *)p_fromView to:(UIView *)p_toView onContainer:(UIView *)p_containerView duration:(NSTimeInterval)p_duration withCompletionCB:(NOPARAMCALLBACK) p_completionCB andPushCB:(NOPARAMCALLBACK) p_pushCB
+{
+    
+    CGAffineTransform rotation = CGAffineTransformMakeRotation(-1 * M_PI_2);
+    CGRect fromRect = p_fromView.frame;
+    CGAffineTransform translation = CGAffineTransformMakeTranslation(-1 * CGRectGetMidX(fromRect), -1 * CGRectGetMidY(fromRect));
+    CGAffineTransform inverseTrans = CGAffineTransformInvert(translation);
+    
+    CGAffineTransform transform = CGAffineTransformConcat(CGAffineTransformConcat(inverseTrans, rotation), translation);
+    
+    p_toView.transform = transform;
+    p_toView.alpha = 1;
+    [p_containerView addSubview:p_toView];
+    
+    [UIView animateWithDuration:p_duration
+                          delay:0
+         usingSpringWithDamping:1
+          initialSpringVelocity:0.5
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         p_toView.alpha = 1;
+                         p_toView.transform = CGAffineTransformIdentity;
+                         p_pushCB();
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             [p_fromView removeFromSuperview];
+                             p_completionCB(finished);
+                         }
+                     }];
+    
+}
+
+- (void) makeRotatedFreefallPopFrom:(UIView*) p_fromView to:(UIView*) p_toView onContainer:(UIView*) p_containerView duration:(NSTimeInterval) p_duration withCompletionCB:(NOPARAMCALLBACK) p_completionCB andPopCB:(NOPARAMCALLBACK) p_popCB
+{
+    
+    CGAffineTransform rotation = CGAffineTransformMakeRotation(-1 * M_PI_2);
+    CGRect fromRect = p_fromView.frame;
+    CGAffineTransform translation = CGAffineTransformMakeTranslation(-1 * CGRectGetMidX(fromRect), -1 * CGRectGetMidY(fromRect));
+    CGAffineTransform inverseTrans = CGAffineTransformInvert(translation);
+    
+    CGAffineTransform transform = CGAffineTransformConcat(CGAffineTransformConcat(inverseTrans, rotation), translation);
+    
+    [p_containerView insertSubview:p_toView belowSubview:p_fromView];
+    [UIView animateWithDuration:p_duration
+                          delay:0
+         usingSpringWithDamping:1
+          initialSpringVelocity:0.5
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         //p_fromView.alpha = 0;
+                         p_fromView.transform = transform;
+                         p_popCB();
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             [p_fromView removeFromSuperview];
+                             p_completionCB(finished);
+                         }
+                     }];
+}
+
+- (void) makePageCurlRightPushFrom:(UIView*) p_fromView to:(UIView*) p_toView onContainer:(UIView*) p_containerView duration:(NSTimeInterval) p_duration withCompletionCB:(NOPARAMCALLBACK) p_completionCB andPushCB:(NOPARAMCALLBACK) p_pushCB
+{
+    [p_containerView insertSubview:p_toView belowSubview:p_fromView];
+    [UIView transitionWithView:p_toView
+                      duration:4.0
+                       options: UIViewAnimationCurveEaseIn | UIViewAnimationOptionTransitionCurlUp
+                    animations:^{
+                        //p_fromView.frame = CGRectMake(-p_fromView.frame.size.width ,-p_fromView.frame.size.height , p_fromView.frame.size.width, p_fromView.frame.size.height);
+                        p_fromView.transform = CGAffineTransformMakeTranslation((-1.0) * p_fromView.center.x , (-1.0) * p_fromView.center.y);
+                        //p_fromView.alpha = 0;
+                        p_pushCB();
+                    }
+                    completion:^(BOOL finished){
+                        [p_fromView removeFromSuperview];
+                        p_completionCB(finished);
+                    }
+     ];
+}
+
+- (void) makePageCurlRightPopFrom:(UIView*) p_fromView to:(UIView*) p_toView onContainer:(UIView*) p_containerView duration:(NSTimeInterval) p_duration withCompletionCB:(NOPARAMCALLBACK) p_completionCB andPopCB:(NOPARAMCALLBACK) p_popCB
+{
+    [p_toView setFrame:CGRectMake(-p_toView.frame.size.width ,-p_toView.frame.size.height , p_toView.frame.size.width, p_toView.frame.size.height)];
+    [p_containerView addSubview:p_toView];
+    p_toView.alpha = 0;
+    [UIView transitionWithView:p_fromView
+                      duration:p_duration
+                       options: UIViewAnimationOptionTransitionCurlDown
+                    animations:^{
+                        p_toView.alpha = 1;
+                        p_toView.frame = CGRectMake(0,0, p_toView.frame.size.width, p_toView.frame.size.height);
+                        p_popCB();
+                    }
+                    completion:^(BOOL finished){
+                        [p_fromView removeFromSuperview];
+                        p_completionCB(finished);
+                    }
+     ];
+}
+
 
 - (void) makeHorizontalNoBouncePushFrom:(UIView*) p_fromView to:(UIView*) p_toView onContainer:(UIView*) p_containerView duration:(NSTimeInterval) p_duration finalFrame:(CGRect) p_finalFrame withCompletionCB:(NOPARAMCALLBACK) p_completionCB andPushCB:(NOPARAMCALLBACK) p_pushCB
 {
@@ -383,6 +775,49 @@
                      } completion:^(BOOL finished) {
                          p_completionCB();
                      }];
+}
+
+
+- (void) makeHorizontalRightFlipPushFrom:(UIView*) p_fromView to:(UIView*) p_toView onContainer:(UIView*) p_containerView duration:(NSTimeInterval) p_duration withCB:(NOPARAMCALLBACK) p_completionCB andPushCB:(NOPARAMCALLBACK) p_pushCB
+{
+    
+    [p_containerView insertSubview:p_toView belowSubview:p_fromView];
+    [UIView animateWithDuration:p_duration animations:^(){
+        p_pushCB();
+    }];
+    [UIView transitionFromView:p_fromView
+                        toView:p_toView
+                      duration:p_duration
+                       options:UIViewAnimationOptionTransitionFlipFromRight
+                    completion:^(BOOL p_finished)
+     {
+         if (p_finished)
+         {
+             [p_fromView removeFromSuperview];
+             p_completionCB(p_finished);
+         }
+     }];
+    
+}
+
+- (void) makeHorizontalRightFlipPopFrom:(UIView*) p_fromView to:(UIView*) p_toView onContainer:(UIView*) p_containerView duration:(NSTimeInterval) p_duration withCB:(NOPARAMCALLBACK) p_completionCB andPopCB:(NOPARAMCALLBACK) p_popCB
+{
+    [p_containerView insertSubview:p_toView belowSubview:p_fromView];
+    [UIView animateWithDuration:p_duration animations:^(){
+        p_popCB();
+    }];
+    [UIView transitionFromView:p_fromView
+                        toView:p_toView
+                      duration:p_duration
+                       options:UIViewAnimationOptionTransitionFlipFromLeft
+                    completion:^(BOOL p_finished)
+     {
+         if (p_finished)
+         {
+             [p_fromView removeFromSuperview];
+             p_completionCB(p_finished);
+         }
+     }];
 }
 
 @end

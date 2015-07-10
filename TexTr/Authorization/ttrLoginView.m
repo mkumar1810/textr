@@ -196,7 +196,7 @@
         _dispTxtField.placeholder = @"password";
         _dispTxtField.secureTextEntry = YES;
 #ifdef DEBUG
-        _dispTxtField.text = @"123";
+        _dispTxtField.text = @"123456";
 #endif
     }
     if ([self.reuseIdentifier isEqualToString:@"login"])

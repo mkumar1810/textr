@@ -20,7 +20,9 @@ typedef enum {
     vertical,
     popOutVerticalOpen,
     horizontalWithBounce,
-    pageCurlFromright
+    pageCurlRightToTop,
+    rotatedFreeFallFromTop,
+    horizontalFlipFromRight
 } TransitionType;
 
 typedef void (^NOPARAMCALLBACK) ();
@@ -33,6 +35,9 @@ typedef void (^STRINGCALLBACK) (NSString *);
 
 @property (nonatomic) TransitionType transitionType;
 @property (nonatomic,retain) NSDictionary * navigateParams;
+@property (nonatomic) BOOL showPullOver;
+@property (nonatomic, assign) BOOL hideStatusBar;
+
 
 @optional
 

@@ -20,6 +20,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     self.transitionType = horizontalWithBounce;
     [self.view setBackgroundColor:[UIColor colorWithRed:0.94 green:0.97 blue:1.0 alpha:1.0]];
 }
@@ -28,6 +29,9 @@
     [super viewDidLoad];
     [self setUpDefaultItems];
     [self setupMainViews];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userId"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sessionToken"];
+
     // Do any additional setup after loading the view.
 }
 

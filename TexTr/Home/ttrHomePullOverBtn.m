@@ -59,7 +59,7 @@
     CGPathAddLineToPoint(l_newlinepathRef, NULL, rect.size.width-1, rect.size.height - 2);
     CGPathAddArc(l_newlinepathRef, NULL, rect.size.width-2, rect.size.height - 2, 1.0, 0, M_PI_2, NO);
     CGPathAddLineToPoint(l_newlinepathRef, NULL, 0, rect.size.height-1);
-    CGPathCloseSubpath(l_cmtpathRef);
+    CGPathCloseSubpath(l_newlinepathRef);
     CGContextAddPath(l_ctx, l_newlinepathRef);
     CGContextStrokePath(l_ctx);
     CGPathRelease(l_newlinepathRef);

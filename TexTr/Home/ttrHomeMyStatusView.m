@@ -107,7 +107,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * l_followcellid = @"follow_cell";
+    static NSString * l_followcellid = @"statusgroup_cell";
     NSDictionary * l_mystatfeeddict = [self.handlerDelegate getMyStatusStreamDataAtPosn:indexPath.row];
     ttrHomeStatFeedViewCustomCell * l_newcell = [tableView dequeueReusableCellWithIdentifier:l_followcellid];
     if (!l_newcell)
@@ -125,11 +125,12 @@
 @interface ttrHomeStatFeedViewCustomCell()
 {
     UIImageView * _profileView;
-    UILabel * _lblusername, * _lblgrptitle, * _lbldescription;
+    UILabel * _lblusername, * _lblgrptitle, * _lbldescription,  * _lbltimebefore;
     NSInteger _posnNo;
     UIButton * _btncomments, * _btnpin, * _btnshare;
-    UILabel * _lblcomments, * _lblpin, * lblshare, * _lbltimediff;
+    UILabel * _lblcomments, * _lblpin, * lblshare; //, * _lbltimediff;
     NSDictionary * _statfeedDict;
+    NSDateFormatter * _utcDateFormatter;
 }
 
 @end
@@ -143,6 +144,9 @@
     {
         _posnNo = p_posnNo;
         [self setBackgroundColor:[UIColor colorWithRed:0.94 green:0.97 blue:1.0 alpha:1.0]];
+        _utcDateFormatter = [[NSDateFormatter alloc] init];
+        [_utcDateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss 'GMT'"];
+        [_utcDateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     }
     return self;
 }
@@ -225,6 +229,11 @@
     _profileView.image = [UIImage imageNamed:@"nophoto"];
     _profileView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_profileView];
+    [_profileView.layer setBorderWidth:1.0f];
+    _profileView.layer.cornerRadius = 5.0f;
+    [_profileView.layer setBorderColor:[UIColor clearColor].CGColor];
+    _profileView.layer.masksToBounds=YES;
+
     [_profileView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[pv(40)]" options:0 metrics:nil views:@{@"pv":_profileView}]];
     [_profileView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pv(40)]" options:0 metrics:nil views:@{@"pv":_profileView}]];
     //[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[pv]" options:0 metrics:nil views:@{@"pv":_profileView}]];
@@ -237,17 +246,30 @@
     [_lblusername addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[name(12)]" options:0 metrics:nil views:@{@"name":_lblusername}]];
     //[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[name]" options:0 metrics:nil views:@{@"name":_lblusername}]];
     _lblusername.textColor = [UIColor grayColor];
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblusername attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-90.0)]]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblusername attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-110.0)]]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[pv]-10-[name]" options:0 metrics:nil views:@{@"name":_lblusername,@"pv":_profileView}]];
+    [_lblusername sizeToFit];
+    
+    
+    _lbltimebefore = [ttrDefaults getStandardLabelWithText:@""];
+    [self addSubview:_lbltimebefore];
+    _lbltimebefore.font = [UIFont systemFontOfSize:10.0f];
+    //_lbltimebefore.backgroundColor = [UIColor redColor];
+    [_lbltimebefore addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[time(12)]" options:0 metrics:nil views:@{@"time":_lbltimebefore}]];
+    [_lbltimebefore addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[time(40)]" options:0 metrics:nil views:@{@"time":_lbltimebefore}]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-12-[time]" options:0 metrics:nil views:@{@"time":_lbltimebefore}]];
+    _lbltimebefore.textColor = [UIColor grayColor];
+    _lbltimebefore.textAlignment = NSTextAlignmentRight;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[pv]-10-[name][time]" options:0 metrics:nil views:@{@"name":_lblusername,@"pv":_profileView,@"time":_lbltimebefore}]];
     [_lblusername sizeToFit];
     
     _lblgrptitle = [ttrDefaults getStandardLabelWithText:@"group title"];
     [self addSubview:_lblgrptitle];
-    _lblgrptitle.font = [UIFont boldSystemFontOfSize:12.0f];
+    _lblgrptitle.font = [UIFont boldSystemFontOfSize:10.0f];
     [_lblgrptitle addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[title(15)]" options:0 metrics:nil views:@{@"title":_lblgrptitle}]];
     //[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[name][title]" options:0 metrics:nil views:@{@"title":_lblgrptitle,@"name":_lblusername}]];
     _lblgrptitle.textColor = [UIColor blackColor];
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-100.0)],[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-70.0)],[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
     [_lblgrptitle sizeToFit];
     
     _lbldescription = [ttrDefaults getStandardLabelWithText:@"description"];
@@ -257,7 +279,7 @@
     [_lbldescription addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[desc(13)]" options:0 metrics:nil views:@{@"desc":_lbldescription}]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[name][title][desc]" options:0 metrics:nil views:@{@"title":_lblgrptitle,@"name":_lblusername,@"desc":_lbldescription}]];
     _lbldescription.textColor = [UIColor grayColor];
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lbldescription attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-100.0)],[NSLayoutConstraint constraintWithItem:_lbldescription attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lbldescription attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-70.0)],[NSLayoutConstraint constraintWithItem:_lbldescription attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
     [_lbldescription sizeToFit];
     
     _btncomments = [ttrDefaults getStandardButton];
@@ -317,6 +339,19 @@
     _lblgrptitle.text = [_statfeedDict valueForKey:@"title"];
     _lbldescription.text = [_statfeedDict valueForKey:@"description"];
     _profileView.image = [UIImage imageNamed:@"nophoto"];
+    
+    NSDate * l_utcdate = [_utcDateFormatter dateFromString:[_statfeedDict valueForKey:@"updatedAt"]];
+    NSTimeInterval l_timeseconds = [[NSDate date] timeIntervalSinceDate:l_utcdate];
+    NSInteger l_mindiff =l_timeseconds / 60.0;
+    NSInteger l_hrsdiff = l_timeseconds / (60.0*60.0);
+    NSInteger l_daydiff = l_timeseconds / (24.0*60.0*60.0);
+    if (l_daydiff>0)
+        _lbltimebefore.text = [NSString stringWithFormat:@"%dd", (int) l_daydiff];
+    else if (l_hrsdiff>0)
+        _lbltimebefore.text =[NSString stringWithFormat:@"%dh", (int) l_hrsdiff];
+    else
+        _lbltimebefore.text =[NSString stringWithFormat:@"%dm", (int) l_mindiff];
+
     if ([_statfeedDict valueForKey:@"userprofile"])
     {
         [[ttrRESTProxy alloc]

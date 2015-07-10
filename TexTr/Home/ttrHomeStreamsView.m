@@ -10,13 +10,14 @@
 #import "ttrDefaults.h"
 #import "ttrRESTProxy.h"
 
-@interface ttrHomeStreamsView()<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate>
+@interface ttrHomeStreamsView()<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate>
 {
     CGFloat _rowHeight;
+    CGSize _keyBoardSize;
 }
 
 @property (nonatomic,strong) UITableView * streamViewTV;
-
+@property (nonatomic,strong) UISearchBar * streamSearchBar;
 
 @end
 
@@ -49,7 +50,18 @@
     [self.streamViewTV setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [self.streamViewTV setBackgroundColor:[UIColor clearColor]];
     self.streamViewTV.contentInset = UIEdgeInsetsZero;
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:1.0],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:1.0],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:(-44.0)],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.streamViewTV attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:(-22.0)]]];
+    self.streamSearchBar = [UISearchBar new];
+    self.streamSearchBar.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.streamSearchBar];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[sb]" options:0 metrics:nil views:@{@"sb":self.streamSearchBar}]];
+    [self.streamSearchBar addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[sb(44)]" options:0 metrics:nil views:@{@"sb":self.streamSearchBar}]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:self.streamSearchBar attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0],[NSLayoutConstraint constraintWithItem:self.streamSearchBar attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.streamViewTV attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]]];
+    self.streamSearchBar.placeholder = @"Search groups, followers and friends";
+    self.streamSearchBar.delegate = self;
+    self.streamSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.streamSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.scrollEnabled = NO;
     [self layoutIfNeeded];
 }
 
@@ -62,6 +74,35 @@
 - (void) reloadAllTheStreams
 {
     [self.streamViewTV reloadData];
+}
+
+- (void)setDataKeyBoardSize:(CGSize)p_keyboardSize
+{
+    if (CGSizeEqualToSize(p_keyboardSize, _keyBoardSize)==NO)
+    {
+        _keyBoardSize = p_keyboardSize;
+    }
+    if (CGSizeEqualToSize(p_keyboardSize, CGSizeZero))
+    {
+        [UIView animateWithDuration:0.4
+                         animations:^{
+                             [self setContentOffset:CGPointMake(0, 0)];
+                         }];
+        return;
+    }
+    CGRect l_inputfieldbounds = [self.streamSearchBar convertRect:self.streamSearchBar.bounds toView:self];
+    CGRect l_superbounds = self.bounds;
+    if ((l_inputfieldbounds.origin.y+l_inputfieldbounds.size.height+10.0)>(l_superbounds.size.height-_keyBoardSize.height))
+    {
+        CGFloat l_offsetheight = (l_inputfieldbounds.origin.y+l_inputfieldbounds.size.height) - (l_superbounds.size.height-_keyBoardSize.height)+10.0;
+        if (l_offsetheight!=self.contentOffset.y)
+        {
+            [UIView animateWithDuration:0.4
+                             animations:^{
+                                 [self setContentOffset:CGPointMake(0, l_offsetheight)];
+                             }];
+        }
+    }
 }
 
 #pragma tableview delegates
@@ -133,17 +174,49 @@
     return l_newcell;
 }
 
+#pragma  search bar customer search string related delegates
+
+-(void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    searchBar.showsCancelButton = YES;
+}
+
+-(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    searchBar.showsCancelButton = NO;
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    searchBar.showsCancelButton = NO;
+    [searchBar resignFirstResponder];
+    searchBar.text = nil;
+    [self.handlerDelegate generateStreamsForSearchStr:@""];
+}
+
+// called when Search (in our case “Done”) button pressed
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    searchBar.showsCancelButton = NO;
+    NSString * l_searchstr = searchBar.text;
+    if (!l_searchstr)
+        l_searchstr = @"";
+    [searchBar resignFirstResponder];
+    [self.handlerDelegate generateStreamsForSearchStr:l_searchstr];
+}
+
 @end
 
 @interface ttrHomeStreamsViewCustomCell()
 {
     UIImageView * _profileView, * _grpImgView;
-    UILabel * _lblusername, * _lblgrptitle, * _lbldescription;
+    UILabel * _lblusername, * _lblgrptitle, * _lbldescription, * _lbltimebefore;
     NSInteger _posnNo;
     UIButton * _btncomments, * _btnpin, * _btnshare;
-    UILabel * _lblcomments, * _lblpin, * lblshare, * _lbltimediff;
+    UILabel * _lblcomments, * _lblpin, * lblshare; //, * _lbltimediff;
     id<ttrHomeStreamsViewDelegate> _dataDelegate;
     NSDictionary * _streamDict;
+    NSDateFormatter * _utcDateFormatter;
 }
 
 @end
@@ -158,6 +231,9 @@
         _posnNo = p_posnNo;
         _dataDelegate = p_dataDelegate;
         [self setBackgroundColor:[UIColor colorWithRed:0.94 green:0.97 blue:1.0 alpha:1.0]];
+        _utcDateFormatter = [[NSDateFormatter alloc] init];
+        [_utcDateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss 'GMT'"];
+        [_utcDateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     }
     return self;
 }
@@ -188,7 +264,7 @@
     CGFloat l_descimgheight = p_rect.size.height / 2;
     
     [_grpImgView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[gi(gi_h)]" options:0 metrics:@{@"gi_h":@(l_descimgheight)} views:@{@"gi":_grpImgView}]];
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-10.0)],[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:(5.0)],[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:2.0 constant:(-l_descimgheight/2-20.0)]]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-20.0)],[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:(0.0)],[NSLayoutConstraint constraintWithItem:_grpImgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:2.0 constant:(-l_descimgheight/2-20.0)]]];
 }
 
 - (void) drawPlainCell:(CGRect) p_rect
@@ -261,6 +337,11 @@
     _profileView.image = [UIImage imageNamed:@"nophoto"];
     _profileView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_profileView];
+    [_profileView.layer setBorderWidth:1.0f];
+    _profileView.layer.cornerRadius = 5.0f;
+    [_profileView.layer setBorderColor:[UIColor clearColor].CGColor];
+    _profileView.layer.masksToBounds=YES;
+
     [_profileView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[pv(40)]" options:0 metrics:nil views:@{@"pv":_profileView}]];
     [_profileView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pv(40)]" options:0 metrics:nil views:@{@"pv":_profileView}]];
     //[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[pv]" options:0 metrics:nil views:@{@"pv":_profileView}]];
@@ -273,17 +354,29 @@
     [_lblusername addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[name(12)]" options:0 metrics:nil views:@{@"name":_lblusername}]];
     //[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[name]" options:0 metrics:nil views:@{@"name":_lblusername}]];
     _lblusername.textColor = [UIColor grayColor];
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblusername attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-90.0)]]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblusername attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-110.0)]]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[pv]-10-[name]" options:0 metrics:nil views:@{@"name":_lblusername,@"pv":_profileView}]];
+    [_lblusername sizeToFit];
+    
+    _lbltimebefore = [ttrDefaults getStandardLabelWithText:@""];
+    [self addSubview:_lbltimebefore];
+    _lbltimebefore.font = [UIFont systemFontOfSize:10.0f];
+    //_lbltimebefore.backgroundColor = [UIColor redColor];
+    [_lbltimebefore addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[time(12)]" options:0 metrics:nil views:@{@"time":_lbltimebefore}]];
+    [_lbltimebefore addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[time(40)]" options:0 metrics:nil views:@{@"time":_lbltimebefore}]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-12-[time]" options:0 metrics:nil views:@{@"time":_lbltimebefore}]];
+    _lbltimebefore.textColor = [UIColor grayColor];
+    _lbltimebefore.textAlignment = NSTextAlignmentRight;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[pv]-10-[name][time]" options:0 metrics:nil views:@{@"name":_lblusername,@"pv":_profileView,@"time":_lbltimebefore}]];
     [_lblusername sizeToFit];
 
     _lblgrptitle = [ttrDefaults getStandardLabelWithText:@"group title"];
     [self addSubview:_lblgrptitle];
-    _lblgrptitle.font = [UIFont boldSystemFontOfSize:12.0f];
+    _lblgrptitle.font = [UIFont boldSystemFontOfSize:10.0f];
     [_lblgrptitle addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[title(15)]" options:0 metrics:nil views:@{@"title":_lblgrptitle}]];
     //[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[name][title]" options:0 metrics:nil views:@{@"title":_lblgrptitle,@"name":_lblusername}]];
     _lblgrptitle.textColor = [UIColor blackColor];
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-100.0)],[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-70.0)],[NSLayoutConstraint constraintWithItem:_lblgrptitle attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
     [_lblgrptitle sizeToFit];
 
     _lbldescription = [ttrDefaults getStandardLabelWithText:@"description"];
@@ -293,17 +386,18 @@
     [_lbldescription addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[desc(13)]" options:0 metrics:nil views:@{@"desc":_lbldescription}]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[name][title][desc]" options:0 metrics:nil views:@{@"title":_lblgrptitle,@"name":_lblusername,@"desc":_lbldescription}]];
     _lbldescription.textColor = [UIColor grayColor];
-    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lbldescription attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-100.0)],[NSLayoutConstraint constraintWithItem:_lbldescription attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
+    [self addConstraints:@[[NSLayoutConstraint constraintWithItem:_lbldescription attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:(-70.0)],[NSLayoutConstraint constraintWithItem:_lbldescription attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:_lblusername attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]]];
     [_lbldescription sizeToFit];
     
     _btncomments = [ttrDefaults getStandardButton];
     [_btncomments setBackgroundColor:[UIColor clearColor]];
     _btncomments.translatesAutoresizingMaskIntoConstraints = NO;
-    [_btncomments setUserInteractionEnabled:NO];
+    //[_btncomments setUserInteractionEnabled:NO];
     [_btncomments setTitle:@"0" forState:UIControlStateNormal];
     [_btncomments setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     _btncomments.titleLabel.font = [UIFont systemFontOfSize:10.0f];
     [_btncomments.titleLabel sizeToFit];
+    //[_btncomments addTarget:self action:@selector(addCommentToGroup) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_btncomments];
     [_btncomments addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bc(10)]" options:0 metrics:nil views:@{@"bc":_btncomments}]];
     [_btncomments addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[bc(10)]" options:0 metrics:nil views:@{@"bc":_btncomments}]];
@@ -354,6 +448,18 @@
     _lbldescription.text = [_streamDict valueForKey:@"description"];
     _profileView.image = [UIImage imageNamed:@"nophoto"];
     _grpImgView.image = nil;
+    NSDate * l_utcdate = [_utcDateFormatter dateFromString:[_streamDict valueForKey:@"updatedAt"]];
+    NSTimeInterval l_timeseconds = [[NSDate date] timeIntervalSinceDate:l_utcdate];
+    NSInteger l_mindiff =l_timeseconds / 60.0;
+    NSInteger l_hrsdiff = l_timeseconds / (60.0*60.0);
+    NSInteger l_daydiff = l_timeseconds / (24.0*60.0*60.0);
+    if (l_daydiff>0)
+        _lbltimebefore.text = [NSString stringWithFormat:@"%dd", (int) l_daydiff];
+    else if (l_hrsdiff>0)
+        _lbltimebefore.text =[NSString stringWithFormat:@"%dh", (int) l_hrsdiff];
+    else
+        _lbltimebefore.text =[NSString stringWithFormat:@"%dm", (int) l_mindiff];
+    
     if ([_streamDict valueForKey:@"userprofile"])
     {
         [[ttrRESTProxy alloc]

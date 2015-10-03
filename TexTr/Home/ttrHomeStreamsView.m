@@ -9,6 +9,7 @@
 #import "ttrHomeStreamsView.h"
 #import "ttrDefaults.h"
 #import "ttrRESTProxy.h"
+#import "ttrCommonUtilities.h"
 
 @interface ttrHomeStreamsView()<UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UISearchBarDelegate>
 {
@@ -172,6 +173,12 @@
                      andDataDelegate:self.handlerDelegate];
     [l_newcell setDisplayValuesAtPosn:indexPath.row andStreamDict:l_streamdict];
     return l_newcell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ttrHomeStreamsViewCustomCell * l_selectedcell = (ttrHomeStreamsViewCustomCell*) [tableView cellForRowAtIndexPath:indexPath];
+    [self.handlerDelegate showGroupMsgBoarAtPosn:indexPath.row fromFrame:[tableView convertRect:l_selectedcell.frame toView:self] withImage:[ttrCommonUtilities captureView:l_selectedcell]];
 }
 
 #pragma  search bar customer search string related delegates

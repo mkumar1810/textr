@@ -60,5 +60,7 @@ typedef void (^STRINGCALLBACK) (NSString *);
 + (UIButton*) getStandardButton;
 + (UIButton*) getStandardButtonWithText:(NSString*) p_btnText;
 + (UIColor*) getDefaultTextColor;
++ (UIColor*) getColorRandomly:(int) p_colorNo withAlpha:(CGFloat) p_alpha;
+
 
 @end

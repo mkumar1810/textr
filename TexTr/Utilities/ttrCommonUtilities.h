@@ -16,5 +16,6 @@
 + (UIImage*) captureView:(UIView*) p_passView ofFrame:(CGRect) p_ofFrame;
 + (BOOL) isTextFieldIsEmpty:(UITextField*) p_txtField;
 + (BOOL) isTextFieldIsValidEMail:(UITextField*) p_txtField;
++ (UIImage *)getImageForPlusBtn:(CGSize)p_onSize withBGColor:(UIColor *)p_bgColor andStrokeColor:(UIColor *)p_strokeColor;
 
 @end

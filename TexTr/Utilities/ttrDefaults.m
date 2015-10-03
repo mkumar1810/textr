@@ -72,4 +72,61 @@ UIButton * (^__c_getStandardButton)() = ^()
     return [UIColor blackColor];
 }
 
++ (UIColor*) getColorRandomly:(int) p_colorNo withAlpha:(CGFloat) p_alpha
+{
+    UIColor * l_returnColor;
+    switch (p_colorNo % 15) {
+        case 0:
+            l_returnColor = [UIColor colorWithRed:0.91 green:0.72 blue:0.88 alpha:p_alpha];
+            break;
+        case 1:
+            l_returnColor = [UIColor colorWithRed:0.93 green:0.74 blue:0.74 alpha:p_alpha];
+            break;
+        case 2:
+            l_returnColor = [UIColor colorWithRed:0.76 green:0.83 blue:0.89 alpha:p_alpha];
+            break;
+        case 3:
+            l_returnColor = [UIColor colorWithRed:0.72 green:0.85 blue:0.72 alpha:p_alpha];
+            break;
+        case 4:
+            l_returnColor = [UIColor colorWithRed:0.69 green:0.69 blue:0.91 alpha:p_alpha];
+            break;
+        case 5:
+            l_returnColor = [UIColor colorWithRed:0.98 green:0.93 blue:0.79 alpha:p_alpha];
+            break;
+        case 6:
+            l_returnColor = [UIColor colorWithRed:0.71 green:0.83 blue:0.82 alpha:p_alpha];
+            break;
+        case 7:
+            l_returnColor = [UIColor colorWithRed:0.81 green:0.89 blue:0.95 alpha:p_alpha];
+            break;
+        case 8:
+            l_returnColor = [UIColor colorWithRed:0.83 green:0.83 blue:0.83 alpha:p_alpha];
+            break;
+        case 9:
+            l_returnColor = [UIColor colorWithRed:0.93 green:0.97 blue:0.78 alpha:p_alpha];
+            break;
+        case 10:
+            l_returnColor = [UIColor colorWithRed:0.97 green:0.78 blue:0.78 alpha:p_alpha];
+            break;
+        case 11:
+            l_returnColor = [UIColor colorWithRed:0.78 green:0.69 blue:0.83 alpha:p_alpha];
+            break;
+        case 12:
+            l_returnColor = [UIColor colorWithRed:0.97 green:0.85 blue:0.82 alpha:p_alpha];
+            break;
+        case 13:
+            l_returnColor = [UIColor colorWithRed:0.88 green:0.95 blue:1.00 alpha:p_alpha];
+            break;
+        case 14:
+            l_returnColor = [UIColor colorWithRed:0.99 green:0.95 blue:0.83 alpha:p_alpha];
+            break;
+        default:
+            l_returnColor = [UIColor whiteColor];
+            break;
+    }
+    return l_returnColor;
+}
+
+
 @end

@@ -54,4 +54,36 @@
     return l_isvalidemail;
 }
 
++ (UIImage *)getImageForPlusBtn:(CGSize)p_onSize withBGColor:(UIColor *)p_bgColor andStrokeColor:(UIColor *)p_strokeColor
+{
+    UIImage * l_returnimage;
+    UIGraphicsBeginImageContext(p_onSize);
+    CGContextRef l_contextRef = UIGraphicsGetCurrentContext();
+    CGContextSetStrokeColorWithColor(l_contextRef, p_strokeColor.CGColor);
+    CGContextSetFillColorWithColor(l_contextRef, p_bgColor.CGColor);
+    CGContextFillRect(l_contextRef, CGRectMake(0, 0, p_onSize.width, p_onSize.height));
+    
+    CGFloat l_yposn1 = 0;
+    CGFloat l_xposn1 = p_onSize.width*0.5;
+    
+    CGFloat l_yposn2 = p_onSize.height;
+    CGFloat l_xposn2 = p_onSize.width*0.5;
+    
+    CGFloat l_yposn3 = p_onSize.height*0.5;
+    CGFloat l_xposn3 = 0;
+    
+    CGFloat l_yposn4 = p_onSize.height*0.5;
+    CGFloat l_xposn4 = p_onSize.width;
+    
+    CGContextMoveToPoint(l_contextRef, l_xposn1, l_yposn1);
+    CGContextAddLineToPoint(l_contextRef, l_xposn2, l_yposn2);
+    CGContextMoveToPoint(l_contextRef, l_xposn3, l_yposn3);
+    CGContextAddLineToPoint(l_contextRef, l_xposn4, l_yposn4);
+    CGContextDrawPath(l_contextRef,kCGPathStroke);
+    l_returnimage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return l_returnimage;
+}
+
+
 @end

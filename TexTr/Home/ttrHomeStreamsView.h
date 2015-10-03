@@ -15,7 +15,7 @@
 - (NSDictionary*) getStreamDataAtPosn:(NSInteger) p_posnNo;
 - (void) generateStreamsForSearchStr:(NSString*) p_searchStr;
 //- (void) addCommentOnStreamAtPosn:(NSInteger) p_posnNo;
-- (void) showGroupForViewingFromStreamAtPosn:(NSInteger) p_posnNo;
+- (void) showGroupMsgBoarAtPosn:(NSInteger) p_posnNo fromFrame:(CGRect) p_fromFrame withImage:(UIImage*) p_cellImage;
 
 @end
 

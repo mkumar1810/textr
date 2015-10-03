@@ -228,7 +228,6 @@
 {
     UIImageView * _descImgView;
     UITextField * _dispTxtField;
-    UITextView * _dispTxtView;
     UILabel * _dispLblField, * _dispLblField2;
     NSInteger _posnNo;
     UIButton * _btnCheckBox, * _btncamera;

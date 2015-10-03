@@ -49,6 +49,12 @@
         l_messagebody = [[NSString alloc] initWithData:l_passdata encoding:NSUTF8StringEncoding];
         [l_theRequest addValue: @"application/json" forHTTPHeaderField:@"Content-Type"];
     }
+    else if ([_responseType isEqualToString:@"GETMETA"])
+    {
+        l_url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/classes/%@",MAIN_API_HOST_URL,[_inputParms valueForKey:@"classname"]]];
+        l_theRequest = [NSMutableURLRequest requestWithURL:l_url];
+        l_requesttype = @"GET";
+    }
     else if ([_responseType isEqualToString:@"USERPROFILE"])
     {
         l_url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/files/profile.jpg",MAIN_API_HOST_URL]];

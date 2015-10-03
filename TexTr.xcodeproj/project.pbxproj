@@ -14,11 +14,14 @@
 		01167C051B4AB65C00DC99F1 /* ttrProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01167C041B4AB65C00DC99F1 /* ttrProfileView.m */; };
 		011B75A11B3B85BE001D2119 /* ttrLoginCtrlr.m in Sources */ = {isa = PBXBuildFile; fileRef = 011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */; };
 		011B75A41B3B86D5001D2119 /* ttrLoginView.m in Sources */ = {isa = PBXBuildFile; fileRef = 011B75A31B3B86D5001D2119 /* ttrLoginView.m */; };
+		011C036E1B567CC500DFCEC7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 011C036D1B567CC500DFCEC7 /* QuartzCore.framework */; };
 		011F41AC1B417ACC00145074 /* ttrHomePullOverBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 011F41AB1B417ACC00145074 /* ttrHomePullOverBtn.m */; };
 		0135D67A1B42C2BD000BD9A2 /* ttrHomeMyStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0135D6791B42C2BD000BD9A2 /* ttrHomeMyStatusView.m */; };
 		014D601C1B4F89BA0054BAC2 /* ttrFriendFollowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D601B1B4F89BA0054BAC2 /* ttrFriendFollowController.m */; };
 		014D601F1B4F8A200054BAC2 /* ttrFriendsListVw.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D601E1B4F8A200054BAC2 /* ttrFriendsListVw.m */; };
 		014D60221B4FB69C0054BAC2 /* ttrFollowersList.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D60211B4FB69C0054BAC2 /* ttrFollowersList.m */; };
+		014D60251B4FE18B0054BAC2 /* ttrGroupMessageBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D60241B4FE18B0054BAC2 /* ttrGroupMessageBoard.m */; };
+		014D60281B4FE2380054BAC2 /* ttrMsgBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 014D60271B4FE2380054BAC2 /* ttrMsgBoardView.m */; };
 		017B58B71B381051002A0ED6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B58B61B381051002A0ED6 /* main.m */; };
 		017B58BA1B381051002A0ED6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B58B91B381051002A0ED6 /* AppDelegate.m */; };
 		017B58C01B381051002A0ED6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 017B58BE1B381051002A0ED6 /* Main.storyboard */; };
@@ -66,6 +69,7 @@
 		011B75A01B3B85BE001D2119 /* ttrLoginCtrlr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrLoginCtrlr.m; sourceTree = "<group>"; };
 		011B75A21B3B86D5001D2119 /* ttrLoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrLoginView.h; sourceTree = "<group>"; };
 		011B75A31B3B86D5001D2119 /* ttrLoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrLoginView.m; sourceTree = "<group>"; };
+		011C036D1B567CC500DFCEC7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		011F41AA1B417ACC00145074 /* ttrHomePullOverBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrHomePullOverBtn.h; sourceTree = "<group>"; };
 		011F41AB1B417ACC00145074 /* ttrHomePullOverBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrHomePullOverBtn.m; sourceTree = "<group>"; };
 		0135D6781B42C2BD000BD9A2 /* ttrHomeMyStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrHomeMyStatusView.h; sourceTree = "<group>"; };
@@ -76,6 +80,10 @@
 		014D601E1B4F8A200054BAC2 /* ttrFriendsListVw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrFriendsListVw.m; sourceTree = "<group>"; };
 		014D60201B4FB69C0054BAC2 /* ttrFollowersList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrFollowersList.h; sourceTree = "<group>"; };
 		014D60211B4FB69C0054BAC2 /* ttrFollowersList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrFollowersList.m; sourceTree = "<group>"; };
+		014D60231B4FE18B0054BAC2 /* ttrGroupMessageBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrGroupMessageBoard.h; sourceTree = "<group>"; };
+		014D60241B4FE18B0054BAC2 /* ttrGroupMessageBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrGroupMessageBoard.m; sourceTree = "<group>"; };
+		014D60261B4FE2380054BAC2 /* ttrMsgBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttrMsgBoardView.h; sourceTree = "<group>"; };
+		014D60271B4FE2380054BAC2 /* ttrMsgBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ttrMsgBoardView.m; sourceTree = "<group>"; };
 		017B58B11B381051002A0ED6 /* TexTr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TexTr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		017B58B51B381051002A0ED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		017B58B61B381051002A0ED6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -122,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				011C036E1B567CC500DFCEC7 /* QuartzCore.framework in Frameworks */,
 				01F159D51B3999DD00FDF78B /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,6 +152,10 @@
 				0104F04D1B3C424A009A079E /* ttrGroupController.m */,
 				0104F04F1B3C5389009A079E /* ttrGroupView.h */,
 				0104F0501B3C5389009A079E /* ttrGroupView.m */,
+				014D60231B4FE18B0054BAC2 /* ttrGroupMessageBoard.h */,
+				014D60241B4FE18B0054BAC2 /* ttrGroupMessageBoard.m */,
+				014D60261B4FE2380054BAC2 /* ttrMsgBoardView.h */,
+				014D60271B4FE2380054BAC2 /* ttrMsgBoardView.m */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -163,6 +176,7 @@
 		017B58A81B381051002A0ED6 = {
 			isa = PBXGroup;
 			children = (
+				011C036D1B567CC500DFCEC7 /* QuartzCore.framework */,
 				01F159D41B3999DD00FDF78B /* AVFoundation.framework */,
 				017B58B31B381051002A0ED6 /* TexTr */,
 				017B58CD1B381051002A0ED6 /* TexTrTests */,
@@ -393,6 +407,7 @@
 				01D728581B3829EE004C3F52 /* ttrSgnLgnOptionScreen.m in Sources */,
 				01D2468B1B4441B900400BC3 /* ttrHomeDropOptions.m in Sources */,
 				01D728511B382846004C3F52 /* ttrCommonUtilities.m in Sources */,
+				014D60281B4FE2380054BAC2 /* ttrMsgBoardView.m in Sources */,
 				014D60221B4FB69C0054BAC2 /* ttrFollowersList.m in Sources */,
 				011B75A41B3B86D5001D2119 /* ttrLoginView.m in Sources */,
 				01167C021B4AB5FA00DC99F1 /* ttrUserProfileCtrlr.m in Sources */,
@@ -407,6 +422,7 @@
 				01E57BF01B3AC182006C4047 /* ttrCaptureDate.m in Sources */,
 				01D7284B1B38264C004C3F52 /* ttrDefaults.m in Sources */,
 				017B58B71B381051002A0ED6 /* main.m in Sources */,
+				014D60251B4FE18B0054BAC2 /* ttrGroupMessageBoard.m in Sources */,
 				0104F04A1B3C0C11009A079E /* ttrHomeCtrlr.m in Sources */,
 				014D601C1B4F89BA0054BAC2 /* ttrFriendFollowController.m in Sources */,
 				011B75A11B3B85BE001D2119 /* ttrLoginCtrlr.m in Sources */,
@@ -493,7 +509,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d4b9fea6-4c71-4260-a49f-5e726835e36e";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Distribution;

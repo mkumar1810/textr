@@ -83,6 +83,7 @@
                     <connections>
                         <segue destination="Lf8-h3-q0v" kind="custom" identifier="createnewgroup" customClass="ttrBaseNavigatorSegue" id="tkN-OQ-TIH"/>
                         <segue destination="HVg-gS-7gw" kind="custom" identifier="showselfprofile" customClass="ttrBaseNavigatorSegue" id="HaH-Lr-k41"/>
+                        <segue destination="103-Ud-36d" kind="custom" identifier="showgroupmessageboard" customClass="ttrBaseNavigatorSegue" id="MJs-aD-4WS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jhJ-C9-BIs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -127,7 +128,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4s4-Me-cIK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1722" y="534"/>
+            <point key="canvasLocation" x="1730" y="532"/>
+        </scene>
+        <!--Group Message Board-->
+        <scene sceneID="r2p-Fr-yeo">
+            <objects>
+                <viewController title="Group Message Board" id="103-Ud-36d" customClass="ttrGroupMessageBoard" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FEk-1a-lHv"/>
+                        <viewControllerLayoutGuide type="bottom" id="ujL-Lu-xYW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8np-eX-Dxm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E39-LO-rLQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1189" y="1383"/>
         </scene>
         <!--Showing followers of User-->
         <scene sceneID="gkZ-ce-cSm">

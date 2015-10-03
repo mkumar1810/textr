@@ -10,12 +10,17 @@
 #import "ttrHomeStreamsView.h"
 #import "ttrRESTProxy.h"
 #import "ttrHomeDropOptions.h"
+#import "ttrCommonUtilities.h"
 
 @interface ttrHomeCtrlr ()<ttrHomeStreamsViewDelegate, UIGestureRecognizerDelegate,  ttrHomeDropDownOptionsDelegate>
 {
     NSArray * _groupstreamsall;
     NSMutableArray * _groupstreamsfiltered;
     CGSize _keyBoardSize;
+    UIImageView * _popOutTopImgVw, * _popOutBottomImgVw;
+    UIImage * _popOutImage;
+    NSInteger _selectedCellNo;
+    CGRect _popOutRect;
 }
 
 @property (nonatomic,strong) ttrHomeStreamsView * homestreamsTV;
@@ -104,10 +109,6 @@
 }
 
 
-- (void)popAnimationCompleted
-{
-    [self initializeAllHomeStreams];
-}
 
 
 - (void)dealloc
@@ -162,6 +163,60 @@
                          [self.homeDropMenuVw removeFromSuperview];
                          self.homeDropMenuVw = nil;
                      }];
+}
+
+#pragma navigation controller animation related delegates
+
+- (void)pushAnimation:(TransitionType)p_pushAnimationType
+{
+    if (_popOutTopImgVw)
+    {
+        _popOutTopImgVw.transform = CGAffineTransformMakeTranslation(0, (-_popOutTopImgVw.frame.size.height));
+        _popOutBottomImgVw.transform = CGAffineTransformMakeTranslation(0, (_popOutBottomImgVw.frame.size.height));
+    }
+}
+
+- (void)popAnimation:(TransitionType)p_popAnimationType
+{
+    if (_popOutTopImgVw)
+    {
+        _popOutTopImgVw.transform = CGAffineTransformIdentity;
+        _popOutBottomImgVw.transform = CGAffineTransformIdentity;
+    }
+}
+
+- (void)popAnimationCompleted
+{
+    [self initializeAllHomeStreams];
+    if (_popOutTopImgVw)
+    {
+        _popOutImage = nil;
+        [_popOutTopImgVw removeFromSuperview];
+        [_popOutBottomImgVw removeFromSuperview];
+        _popOutTopImgVw = nil;
+        _popOutBottomImgVw = nil;
+    }
+    [super popAnimationCompleted];
+}
+
+- (CGRect) getPopOutFrame
+{
+    return _popOutRect;
+}
+
+- (UIImage*) getPopOutTopImage
+{
+    return nil;
+}
+
+- (UIImage*) getPopOutBottomImage
+{
+    return nil;
+}
+
+- (UIImage*) getPopOutImage
+{
+    return _popOutImage;
 }
 
 #pragma keyboard related notificaiton handlers
@@ -226,9 +281,34 @@
     [self.homestreamsTV reloadAllTheStreams];
 }
 
-- (void)showGroupForViewingFromStreamAtPosn:(NSInteger)p_posnNo
+- (void) showGroupMsgBoarAtPosn:(NSInteger) p_posnNo fromFrame:(CGRect) p_fromFrame withImage:(UIImage*) p_cellImage
 {
-    
+    _selectedCellNo = p_posnNo;
+    _popOutRect = [self.homestreamsTV convertRect:p_fromFrame toView:self.view];
+    _popOutImage = p_cellImage;
+    //NSDictionary * l_merchantrawdict = [_groupstreamsfiltered objectAtIndex:p_posnNo];
+    _popOutTopImgVw = [[UIImageView alloc] initWithImage:[ttrCommonUtilities captureView:self.view ofFrame:CGRectMake(0, 0, self.view.frame.size.width, _popOutRect.origin.y)]];
+    _popOutTopImgVw.translatesAutoresizingMaskIntoConstraints = NO;
+    _popOutBottomImgVw = [[UIImageView alloc] initWithImage:[ttrCommonUtilities captureView:self.view ofFrame:CGRectMake(0, _popOutRect.origin.y+_popOutRect.size.height, self.view.frame.size.width, self.view.frame.size.height - (_popOutRect.origin.y+_popOutRect.size.height))]];
+    _popOutBottomImgVw.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:_popOutTopImgVw];
+    [self.view addSubview:_popOutBottomImgVw];
+    [_popOutTopImgVw addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[topimg(w)]" options:0 metrics:@{@"w":@(self.view.frame.size.width)} views:@{@"topimg":_popOutTopImgVw}]];
+    [_popOutBottomImgVw addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[botimg(w)]" options:0 metrics:@{@"w":@(self.view.frame.size.width)} views:@{@"botimg":_popOutBottomImgVw}]];
+    [_popOutTopImgVw addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topimg(h)]" options:0 metrics:@{@"h":@(_popOutRect.origin.y)} views:@{@"topimg":_popOutTopImgVw}]];
+    [_popOutBottomImgVw addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[botimg(h)]" options:0 metrics:@{@"h":@(self.view.frame.size.height-(_popOutRect.origin.y+_popOutRect.size.height))} views:@{@"botimg":_popOutBottomImgVw}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[topimg]" options:0 metrics:nil views:@{@"topimg":_popOutTopImgVw}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[botimg]" options:0 metrics:nil views:@{@"botimg":_popOutBottomImgVw}]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_popOutTopImgVw attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.navBar attribute:NSLayoutAttributeTop multiplier:1.0 constant:(-20.0f)]]; // _bottomImgYConstraint];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_popOutBottomImgVw attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.homestreamsTV attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    [self.view layoutIfNeeded];
+    self.navigateParams = [_groupstreamsfiltered objectAtIndex:p_posnNo];
+    [self.view bringSubviewToFront:self.actView];
+    [self.actView startAnimating];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSegueWithIdentifier:@"showgroupmessageboard" sender:self];
+        [self.actView stopAnimating];
+    });
 }
 
 #pragma drop down options popup delegates
